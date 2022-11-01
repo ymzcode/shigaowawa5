@@ -86,7 +86,16 @@
 				"navigationBarTitleText": "注册管理员账号"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/myArticle/myArticle",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"tabBar": {
 		"color": "#eeeeee",
 		"selectedColor": "#ffffff",
@@ -99,7 +108,7 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/createArticle/createArticle",
+				"pagePath": "pages/myArticle/myArticle",
 				"iconPath": "static/tabbar/storage.png",
 				"selectedIconPath": "static/tabbar/storage1.png",
 				"text": "发布"

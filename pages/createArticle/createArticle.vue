@@ -49,13 +49,13 @@
 				columns: [
 					[{
 						label: '石膏娃娃',
-						id: 'doll'
+						id: '63609853548ef40001a0dd7f'
 					}, {
 						label: '流体',
-						id: 'fluid'
+						id: '63609863702e9d0001d5a7f0'
 					}, {
 						label: '其他',
-						id: 'other'
+						id: '6360987abf704d00012e6afa'
 					}]
 				]
 			};
@@ -158,6 +158,10 @@
 					console.log(res)
 				}).catch(err => {
 					console.log(err)
+					uni.showToast({
+						title: err.errMsg,
+						icon: 'none'
+					})
 				})
 			},
 			// 检查必填项
@@ -223,8 +227,19 @@
 						category_id: this.category
 					}
 				}).then(res => {
-					console.log(res);
+					console.log(res)
+					if (res.result.code === 0) {
+						uni.navigateBack(-1)
+						uni.showToast({
+							title: '发布成功',
+							icon: 'none'
+						})
+					}
 				}).catch(err => {
+					uni.showToast({
+						title: err.toString(),
+						icon: 'none'
+					})
 					console.error(err)
 				})
 			}
