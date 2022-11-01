@@ -24,11 +24,8 @@
 			<!-- 展览图 -->
 			<view class="image-card">
 				<u-grid :col="2" :border="false">
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
+					<u-grid-item v-for="item in articleArr.slice(0,2)" :key="item._id">
+						<draw-image :resObject="item"></draw-image>
 					</u-grid-item>
 				</u-grid>
 			</view>
@@ -43,32 +40,8 @@
 
 			<view class="image-card">
 				<u-grid :col="2" :border="false">
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
-					</u-grid-item>
-					<u-grid-item>
-						<draw-image></draw-image>
+					<u-grid-item v-for="item in articleArr.slice(2)" :key="item._id">
+						<draw-image :resObject="item"></draw-image>
 					</u-grid-item>
 				</u-grid>
 			</view>
@@ -84,7 +57,9 @@
 					'https://cdn.uviewui.com/uview/swiper/swiper3.png',
 					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
 					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-				]
+				],
+				// 列表数据
+				articleArr: []
 			}
 		},
 		created() {
@@ -100,8 +75,8 @@
 					}
 				}).then(res => {
 					console.log(res)
-					if (res.code === 0) {
-						
+					if (res.result.code === 0) {
+						this.articleArr = res.result.data
 					}
 				}).catch(err => {
 					uni.showToast({
