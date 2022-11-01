@@ -1,0 +1,128 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		}, {
+			"path": "pages/createArticle/createArticle",
+			"style": {
+				"navigationBarTitleText": "创建新作品",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "uni_modules/uni-id-pages/pages/userinfo/deactivate/deactivate",
+			"style": {
+				"navigationBarTitleText": "注销账号"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/userinfo/userinfo",
+			"style": {
+				"navigationBarTitleText": "个人资料"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/userinfo/bind-mobile/bind-mobile",
+			"style": {
+				"navigationBarTitleText": "绑定手机号码"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/userinfo/cropImage/cropImage",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/login/login-withoutpwd",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/login/login-withpwd",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/login/login-smscode",
+			"style": {
+				"navigationBarTitleText": "手机验证码登录"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/register/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/register/register-by-email",
+			"style": {
+				"navigationBarTitleText": "邮箱验证码注册"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/retrieve/retrieve",
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/retrieve/retrieve-by-email",
+			"style": {
+				"navigationBarTitleText": "通过邮箱重置密码"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/common/webview/webview",
+			"style": {
+				"enablePullDownRefresh": false,
+				"navigationBarTitleText": ""
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/userinfo/change_pwd/change_pwd",
+			"style": {
+				"enablePullDownRefresh": false,
+				"navigationBarTitleText": "修改密码"
+			}
+		}, {
+			"path": "uni_modules/uni-id-pages/pages/register/register-admin",
+			"style": {
+				"enablePullDownRefresh": false,
+				"navigationBarTitleText": "注册管理员账号"
+			}
+		}
+	],
+	"tabBar": {
+		"color": "#eeeeee",
+		"selectedColor": "#ffffff",
+		"borderStyle": "black",
+		"backgroundColor": "#333333",
+		"list": [{
+				"pagePath": "pages/home/home",
+				"iconPath": "static/tabbar/fn.png",
+				"selectedIconPath": "static/tabbar/fn1.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/createArticle/createArticle",
+				"iconPath": "static/tabbar/storage.png",
+				"selectedIconPath": "static/tabbar/storage1.png",
+				"text": "发布"
+			}
+			// {
+			// 	"pagePath": "pages/createArticle/createArticle",
+			// 	"iconPath": "static/tabbar/yun.png",
+			// 	"selectedIconPath": "static/tabbar/yun1.png",
+			// 	"text": "喜欢"
+			// }
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "DIY手工展览馆",
+		"navigationBarBackgroundColor": "#323538",
+		"backgroundColor": "#323538"
+	},
+	"uniIdRouter": {
+		"loginPage": "uni_modules/uni-id-pages/pages/login/login-withoutpwd", // 登录页面路径
+		"needLogin": [
+					"pages/createArticle/createArticle" // 需要登录才可访问的页面列表，可以使用正则语法
+				],
+				"resToLogin": true // 自动解析云对象及clientDB的错误码，如果是客户端token不正确或token过期则自动跳转配置的登录页面，配置为false则关闭此行为，默认true
+	}
+}
