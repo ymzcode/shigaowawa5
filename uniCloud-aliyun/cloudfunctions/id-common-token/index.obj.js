@@ -1,7 +1,6 @@
 // 云对象教程: https://uniapp.dcloud.net.cn/uniCloud/cloud-obj
 // jsdoc语法提示教程：https://ask.dcloud.net.cn/docs/#//ask.dcloud.net.cn/article/129
 const uniID = require('uni-id-common')
-const db = uniCloud.database()
 
 module.exports = {
 	_before: function() { // 通用预处理器
@@ -29,8 +28,11 @@ module.exports = {
 				errMsg
 			}
 		}
+		const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云对象的clientInfo
+			clientInfo: this.getClientInfo()
+		})
 		
-		const collection = db.collection('uni-id-users')
+		const collection = dbJQL.collection('uni-id-users')
 		const RRR = await collection.where({
 			_id: uid
 		}).get()

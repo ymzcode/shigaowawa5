@@ -1,7 +1,4 @@
 'use strict';
-const db = uniCloud.database()
-
-
 
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
@@ -23,13 +20,20 @@ exports.main = async (event, context) => {
 	
 
 
+	const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云函数的event和context，必传
+		event,
+		context 
+	})
+
 	// 构造默认参数
 	const params = {
 		article_status: 1,
-		...event
+		album: event.album,
+		title: event.title,
+		category_id: event.category_id
 	}
 
-	const collection = db.collection('opendb-news-articles')
+	const collection = dbJQL.collection('opendb-news-articles')
 	const res = await collection.add(params)
 	return res
 
