@@ -21,7 +21,7 @@ module.exports = {
 			errMsg,
 			uid
 		} = await this.uniID.checkToken(token)
-		
+
 		if (errCode) { // uni-id-common的checkToken接口可能返回`uni-id-token-expired`、`uni-id-check-token-failed`错误码，二者均会触发客户端跳转登陆页面
 			return {
 				errCode,
@@ -31,12 +31,12 @@ module.exports = {
 		const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云对象的clientInfo
 			clientInfo: this.getClientInfo()
 		})
-		
 		const collection = dbJQL.collection('uni-id-users')
 		const RRR = await collection.where({
-			_id: uid
-		}).get()
-		
+				_id: uid
+			}).field('nickname,avatar_file')
+			.get()
+
 		return RRR
 	}
 	/**
