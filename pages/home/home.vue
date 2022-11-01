@@ -1,5 +1,5 @@
 <template>
-	<scroll-view class="body-wrapper" :scroll-y="true">
+	<view class="body-wrapper">
 		<view class="my-content-wrapper">
 			<!-- 顶部组件 -->
 			<view class="top-tool">
@@ -36,7 +36,7 @@
 					bgColor="rgba(0,0,0,0)">
 				</u-swiper>
 			</view>
-			
+
 
 			<view class="image-card">
 				<u-grid :col="2" :border="false">
@@ -46,7 +46,7 @@
 				</u-grid>
 			</view>
 		</view>
-	</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -59,10 +59,26 @@
 					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
 				],
 				// 列表数据
-				articleArr: []
+				articleArr: [],
+				refresherTriggered: false,
+				page: 1,
+				size: 10
 			}
 		},
 		created() {
+			this.api_getArticle()
+		},
+		// 下拉刷新
+		onPullDownRefresh() {
+			console.log('refresh');
+			setTimeout(function() {
+				this.articleArr = []
+				this.page = 1
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
+		onReachBottom() {
+			console.log('chudichudi');
 			this.api_getArticle()
 		},
 		methods: {
@@ -70,13 +86,16 @@
 				uniCloud.callFunction({
 					name: 'home-get-article',
 					data: {
-						page: 1,
-						size: 10
+						page: this.page,
+						size: this.size
 					}
 				}).then(res => {
 					console.log(res)
 					if (res.result.code === 0) {
-						this.articleArr = res.result.data
+						this.articleArr = this.articleArr.concat(res.result.data)
+						if (res.result.data.length > 0) {
+							this.page++
+						}
 					}
 				}).catch(err => {
 					uni.showToast({
@@ -92,12 +111,13 @@
 
 <style scoped lang="scss">
 	$bj-pd:0 40rpx; //边距
-	
+
 	.body-wrapper {
+		display: flex;
+		flex-direction: column;
 		// background-color: $sgw-theme-bg;
 		background: $linear-theme-bg;
 		color: #ffffff;
-		height: 100vh;
 	}
 
 	.my-content-wrapper {
