@@ -1,11 +1,14 @@
 // 云对象教程: https://uniapp.dcloud.net.cn/uniCloud/cloud-obj
 // jsdoc语法提示教程：https://ask.dcloud.net.cn/docs/#//ask.dcloud.net.cn/article/129
-const uniID = require('uni-id-common')
+const uniIdCommon = require('uni-id-common')
 
 module.exports = {
 	_before: function() { // 通用预处理器
 		const clientInfo = this.getClientInfo()
-		this.uniID = uniID.createInstance({ // 创建uni-id实例，其上方法同uniID
+		this.uniIdCommon = uniIdCommon.createInstance({ // 创建uni-id实例，其上方法同uniID
+			clientInfo
+		})
+		this.dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云对象的clientInfo
 			clientInfo
 		})
 	},
@@ -13,14 +16,14 @@ module.exports = {
 		if (!token) {
 			return {
 				errCode: 'TOKEN_IS_NULL',
-				errMsg: '参数不能为空'
+				errMsg: '登录状态无效'
 			}
 		}
 		const {
 			errCode,
 			errMsg,
 			uid
-		} = await this.uniID.checkToken(token)
+		} = await this.uniIdCommon.checkToken(token)
 
 		if (errCode) { // uni-id-common的checkToken接口可能返回`uni-id-token-expired`、`uni-id-check-token-failed`错误码，二者均会触发客户端跳转登陆页面
 			return {
@@ -28,10 +31,8 @@ module.exports = {
 				errMsg
 			}
 		}
-		const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云对象的clientInfo
-			clientInfo: this.getClientInfo()
-		})
-		const collection = dbJQL.collection('uni-id-users')
+		
+		const collection = this.dbJQL.collection('uni-id-users')
 		const RRR = await collection.where({
 				_id: uid
 			}).field('nickname,avatar_file')

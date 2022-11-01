@@ -87,8 +87,30 @@
 				]
 			}
 		},
+		created() {
+			this.api_getArticle()
+		},
 		methods: {
-
+			api_getArticle() {
+				uniCloud.callFunction({
+					name: 'home-get-article',
+					data: {
+						page: 1,
+						size: 10
+					}
+				}).then(res => {
+					console.log(res)
+					if (res.code === 0) {
+						
+					}
+				}).catch(err => {
+					uni.showToast({
+						title: err.toString(),
+						icon: 'none'
+					})
+					console.error(err)
+				})
+			}
 		}
 	}
 </script>
