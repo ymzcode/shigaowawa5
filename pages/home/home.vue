@@ -7,19 +7,19 @@
 				<view class=""></view>
 				<!-- 右侧菜单 -->
 				<view class="right-tool">
-					<view class="">
+					<!-- <view>
 						<u-icon name="bell-fill" color="#ffffff" size="28"></u-icon>
-					</view>
+					</view> -->
 					<view style="margin-left: 40rpx;">
-						<u-avatar src="/static/uniCloud-logo-1.png"></u-avatar>
+						<u-avatar size="30" :src="userInfo.avatar_file.url" @click="gotoUser"></u-avatar>
 					</view>
 				</view>
 			</view>
 			<!-- 欢迎语 -->
-			<!-- <view class="welcome-wrapper">
+			<view class="welcome-wrapper">
 				<text>Hello</text>
-				<text>撒打算打算</text>
-			</view> -->
+				<text>{{userInfo.nickname}}</text>
+			</view>
 
 			<!-- 展览图 -->
 			<view class="image-card">
@@ -50,6 +50,10 @@
 </template>
 
 <script>
+	import {
+		store
+	} from '@/uni_modules/uni-id-pages/common/store.js'
+
 	export default {
 		data() {
 			return {
@@ -63,6 +67,11 @@
 				refresherTriggered: false,
 				page: 1,
 				size: 10
+			}
+		},
+		computed: {
+			userInfo() {
+				return store.userInfo
 			}
 		},
 		created() {
@@ -82,6 +91,17 @@
 			this.api_getArticle()
 		},
 		methods: {
+			gotoUser() {
+				if (this.userInfo._id) {
+					uni.navigateTo({
+						url: '/uni_modules/uni-id-pages/pages/userinfo/userinfo?showLoginManage=true'
+					})
+				} else {
+					uni.navigateTo({
+						url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
+					})
+				}
+			},
 			api_getArticle() {
 				uniCloud.callFunction({
 					name: 'home-get-article',
@@ -126,6 +146,7 @@
 		flex: 1;
 		overflow: hidden;
 		box-sizing: border-box;
+		position: relative;
 		margin: 0;
 		width: 100%;
 	}
@@ -148,6 +169,7 @@
 
 	.welcome-wrapper {
 		display: flex;
+		position: absolute;
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: flex-start;

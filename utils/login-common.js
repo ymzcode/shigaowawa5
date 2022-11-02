@@ -22,6 +22,12 @@ const loginUtils = {
 				}
 			})
 		}
+	},
+	// 清除登录信息
+	clearLoginInfo() {
+		uni.removeStorageSync('uni_id_token')
+		uni.removeStorageSync('uni-id-pages-userInfo')
+		uni.removeStorageSync('uni_id_token_expired')
 	}
 }
 
