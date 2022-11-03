@@ -4,7 +4,7 @@
 		<!-- <view class="status_bar"></view> -->
 		<!-- 返回工具栏 -->
 		<!-- 顶部暗色区域 -->
-		<view class="top-bg-menu"></view>
+		<!-- <view class="top-bg-menu"></view> -->
 		<view class="top-menu">
 			<view class="back" @click="back">
 				<u-icon color="#ffffff" name="arrow-left" size="20"></u-icon>
@@ -20,6 +20,9 @@
 
 		<!-- 评论区域 -->
 		<view class="comment-wrapper">
+			<view class="comment-top-tag">
+				<u-icon :name="commentTopTag" color="#eeeeee" size="20"></u-icon>
+			</view>
 			<!-- 标题 -->
 			<view class="title-and-like">
 				<view class="title">
@@ -65,7 +68,8 @@
 				id: '',
 				errorPage: false,
 				articleInfo: {},
-				swiperLoading: true
+				swiperLoading: true,
+				commentTopTag: 'minus'
 			}
 		},
 		computed: {
@@ -84,6 +88,15 @@
 					return this.articleInfo.album.split(',')
 				}
 				return []
+			}
+		},
+		onPageScroll(e) { //nvue暂不支持滚动监听，可用bindingx代替
+			// console.log("滚动距离为：" + e.scrollTop);
+			// console.log(e);
+			if (e.scrollTop <= 8 && this.commentTopTag === 'minus') {
+				this.commentTopTag = 'arrow-up'
+			} else if (this.commentTopTag !== 'minus' && e.scrollTop > 8) {
+				this.commentTopTag = 'minus'
 			}
 		},
 		onLoad(e) {
@@ -145,6 +158,17 @@
 		>view {
 			padding-left: 50rpx;
 			padding-right: 50rpx;
+		}
+		
+		.comment-top-tag {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
 		}
 
 		.title-and-like {
@@ -229,8 +253,9 @@
 		flex-wrap: nowrap;
 		justify-content: space-between;
 		width: 100%;
-		height: 75rpx;
+		height: 110rpx;
 		position: fixed;
+		background: linear-gradient(rgba(50, 53, 56, 0.3), rgba(0, 0, 0, 0));
 		top: 0;
 		padding-top: var(--status-bar-height);
 		z-index: 2;
