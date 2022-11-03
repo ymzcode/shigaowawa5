@@ -26,7 +26,7 @@
 			<!-- 标题 -->
 			<view class="title-and-like">
 				<view class="title">
-					{{ articleInfo.title }}
+					{{ articleInfo.title || '' }}
 				</view>
 				<view class="like">
 					<u-icon name="heart-fill" color="#ffffff" size="34"></u-icon>
