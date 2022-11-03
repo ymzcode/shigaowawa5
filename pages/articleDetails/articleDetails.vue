@@ -1,5 +1,5 @@
 <template>
-	<view class="app-body-wrapper">
+	<view v-if="!errorPage" class="app-body-wrapper">
 		<!-- 这里是状态栏 -->
 		<!-- <view class="status_bar"></view> -->
 		<!-- 返回工具栏 -->
@@ -13,7 +13,7 @@
 		</view>
 		<u-sticky zIndex="0" bgColor="rgba(0,0,0,0)" offset-top="0">
 			<!-- 相册 -->
-			<u-swiper style="width: 100%;" height="80vh" imgMode="heightFix" :list="list3" indicator
+			<u-swiper :loading="swiperLoading" style="width: 100%;" height="80vh" imgMode="heightFix" :list="album" indicator
 				indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)"></u-swiper>
 		</u-sticky>
 
@@ -23,7 +23,7 @@
 			<!-- 标题 -->
 			<view class="title-and-like">
 				<view class="title">
-					xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+					{{ articleInfo.title }}
 				</view>
 				<view class="like">
 					<u-icon name="heart-fill" color="#ffffff" size="34"></u-icon>
@@ -34,16 +34,16 @@
 				<view class="tip-left">
 					<view class="read">
 						<u-icon name="eye" color="#ffffff" size="18"></u-icon>
-						<text>1.5K</text>
+						<text>{{ view_count }}</text>
 					</view>
 					<view class="like">
 						<u-icon name="heart-fill" color="#ffffff" size="18"></u-icon>
-						<text>322喜欢</text>
+						<text>{{ like_count }}喜欢</text>
 					</view>
 				</view>
 				<view class="time">
 					<u-icon name="clock-fill" color="#eeeeee" size="16"></u-icon>
-					<text>2分钟前</text>
+					<text>{{ publish_date }}</text>
 				</view>
 			</view>
 			<view class="" v-for="item in 1000" :key="item">
@@ -51,35 +51,77 @@
 			</view>
 		</view>
 	</view>
+	<view v-else class="app-body-wrapper" style="justify-content: center;align-items: center;">
+		<u-navbar bgColor="#323538" leftIconColor="#ffffff" :autoBack="true">
+		</u-navbar>
+		<u-empty mode="data"></u-empty>
+	</view>
 </template>
 
 <script>
 	export default {
 		data() {
 			return {
-				list3: [
-					'https://cdn.uviewui.com/uview/album/1.jpg',
-					'https://cdn.uviewui.com/uview/album/1.jpg'
-				]
+				id: '',
+				errorPage: false,
+				articleInfo: {},
+				swiperLoading: true
+			}
+		},
+		computed: {
+			// 发表时间
+			publish_date() {
+				return uni.$u.timeFrom(this.articleInfo.publish_date)
+			},
+			view_count() {
+				return this.articleInfo.view_count || 0
+			},
+			like_count() {
+				return this.articleInfo.like_count || 0
+			},
+			album() {
+				if (this.articleInfo.album) {
+					return this.articleInfo.album.split(',')
+				}
+				return []
 			}
 		},
 		onLoad(e) {
 			console.log('传递的参数', e)
+			if (!e.id) {
+				this.errorPage = true
+			}
+			this.id = e.id
 			uni.pageScrollTo({
 				scrollTop: 100,
 				duration: 0
 			});
+			this.api_getarticleByid()
 		},
 		methods: {
 			back() {
 				uni.navigateBack(-1)
 			},
 			api_getarticleByid() {
+				this.swiperLoading = true
 				uniCloud.callFunction({
 					name: 'get-article-byid',
 					data: {
-						id: e.id
+						id: this.id
 					}
+				}).then(res => {
+					console.log(res)
+					this.swiperLoading = false
+					if (res.result.code === 0) {
+						this.articleInfo = res.result.data[0]
+					}
+				}).catch(err => {
+					this.swiperLoading = false
+					uni.showToast({
+						title: err.toString(),
+						icon: 'none'
+					})
+					console.error(err)
 				})
 			}
 		}
@@ -111,6 +153,7 @@
 			flex-wrap: nowrap;
 			justify-content: space-between;
 			align-items: center;
+
 			.title {
 				max-width: 450rpx;
 				word-break: break-all;
@@ -118,6 +161,7 @@
 
 			.like {}
 		}
+
 		.article-tip {
 			display: flex;
 			flex-direction: row;
@@ -125,31 +169,37 @@
 			align-items: center;
 			justify-content: space-between;
 			margin: 30rpx 0;
+
 			text {
 				font-size: 30rpx;
 				margin-left: 10rpx;
 			}
+
 			.tip-left {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
 			}
+
 			.read {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
 			}
+
 			.like {
 				margin-left: 50rpx;
 				display: flex;
 				flex-direction: row;
 				align-items: center;
 			}
+
 			.time {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
 				color: #eeeeee;
+
 				text {
 					font-size: 26rpx;
 				}

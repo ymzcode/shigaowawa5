@@ -19,8 +19,9 @@
 			</view>
 		</view>
 		<!-- 标题 -->
-		<view>
-			<text class="card-title">{{ resObject.title }}</text>
+		<view style="height: 100rpx;">
+			<u--text color="#ffffff" :lines="2" :text="resObject.title"></u--text>
+			<!-- <text class="card-title"></text> -->
 		</view>
 	</view>
 </template>

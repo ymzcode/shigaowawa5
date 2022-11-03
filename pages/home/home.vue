@@ -46,6 +46,8 @@
 				</u-grid>
 			</view>
 		</view>
+		
+		<view style="height: 400rpx;width: 100%;"></view>
 	</view>
 </template>
 
@@ -80,11 +82,10 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
-			setTimeout(function() {
-				this.articleArr = []
-				this.page = 1
-				uni.stopPullDownRefresh();
-			}, 1000);
+			this.articleArr = []
+			this.page = 1
+			this.api_getArticle()
+
 		},
 		onReachBottom() {
 			console.log('chudichudi');
@@ -111,6 +112,7 @@
 					}
 				}).then(res => {
 					console.log(res)
+					uni.stopPullDownRefresh();
 					if (res.result.code === 0) {
 						this.articleArr = this.articleArr.concat(res.result.data)
 						if (res.result.data.length > 0) {
@@ -118,6 +120,7 @@
 						}
 					}
 				}).catch(err => {
+					uni.stopPullDownRefresh();
 					uni.showToast({
 						title: err.toString(),
 						icon: 'none'
