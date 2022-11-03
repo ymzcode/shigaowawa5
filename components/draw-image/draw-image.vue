@@ -1,5 +1,5 @@
 <template>
-	<view class="draw-image">
+	<view class="draw-image" @click="onClickCard">
 		<view class="image-card-body">
 			<u--image width='320rpx' height='320rpx' :radius="20" :src="firstImage" :fade="true" duration="450"></u--image>
 			<!-- 红心 -->
@@ -58,6 +58,13 @@
 			// 首页展示图
 			firstImage() {
 				return this.imageArr[0]
+			}
+		},
+		methods: {
+			onClickCard() {
+				uni.navigateTo({
+					url: `/pages/articleDetails/articleDetails?id=${this.resObject._id}`
+				})
 			}
 		}
 	}

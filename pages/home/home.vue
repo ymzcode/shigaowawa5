@@ -1,5 +1,5 @@
 <template>
-	<view class="body-wrapper">
+	<view class="app-body-wrapper">
 		<view class="my-content-wrapper">
 			<!-- 顶部组件 -->
 			<view class="top-tool">
@@ -11,7 +11,7 @@
 						<u-icon name="bell-fill" color="#ffffff" size="28"></u-icon>
 					</view> -->
 					<view style="margin-left: 40rpx;">
-						<u-avatar size="30" :src="userInfo.avatar_file.url" @click="gotoUser"></u-avatar>
+						<u-avatar size="35" :src="userInfo.avatar_file.url" @click="gotoUser"></u-avatar>
 					</view>
 				</view>
 			</view>
