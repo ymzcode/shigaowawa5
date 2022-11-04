@@ -59,10 +59,13 @@
 			<u-sticky zIndex="2" bgColor="rgba(0,0,0,0)" :offset-top="offsetTop">
 				<view class="comment-input-wrapper">
 					<view class="comment-main-bg">
-						<u--input v-model="commentText" placeholder="发表评论" prefixIcon="chat-fill"
-							prefixIconStyle="font-size: 22px;color: #909399" suffixIcon="checkmark" border="none"
-							suffixIconStyle="color: #909399">
-						</u--input>
+						<u-input v-model="commentText" type='text' placeholder="发表评论" prefixIcon="chat-fill"
+							prefixIconStyle="font-size: 22px;color: #909399" border="none" maxlength="300" clearable
+							color="#ffffff">
+							<template slot="suffix">
+								<u-button v-if="commentText" type="primary" size="mini" text="发送" @click="sendCommentContent"></u-button>
+							</template>
+						</u-input>
 					</view>
 				</view>
 			</u-sticky>
@@ -147,6 +150,40 @@
 			}
 		},
 		methods: {
+			sendCommentContent() {
+				console.log(111);
+				if (!this.isLogin) {
+					uni.showToast({
+						title: '请登录后操作',
+						icon: 'none'
+					})
+					return
+				}
+				if (this.commentText == '' || uni.$u.trim(this.commentText, 'all') == '') {
+					uni.showToast({
+						title: '请输入评论内容',
+						icon: 'none'
+					})
+					return
+				}
+				uni.$u.throttle(this.api_articleComment('add'), 2000)
+			},
+			api_articleComment(action) {
+				this.$request('article-comment', {
+					action: action,
+					id: this.id,
+					comment_content: this.commentText
+				}).then(res => {
+					console.log(res)
+					if (res.code === 0) {
+						uni.showToast({
+							title: '发表成功',
+							icon: 'none'
+						})
+						this.commentText = ''
+					}
+				})
+			},
 			onClickLike() {
 				if (this.isLogin) {
 					this.api_targetFavorite()
@@ -205,11 +242,13 @@
 		flex-direction: row;
 		align-items: center;
 		margin: 30rpx 0;
+
 		text {
 			margin-left: 20rpx;
 			font-size: 34rpx;
 		}
 	}
+
 	.comment-input-wrapper {
 		display: flex;
 		flex-direction: row;
