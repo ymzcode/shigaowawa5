@@ -15,13 +15,6 @@ exports.main = async (event, context) => {
 		event,
 		context
 	})
-
-	// const uniIDIns = uniID.createInstance({ // 创建uni-id实例
-	// 	context: context
-	// })
-	// const user_uid = await uniIDIns.checkToken(event.uniIdToken)
-
-	// console.log(user_uid)
 	
 	const idCommonToken = uniCloud.importObject('id-common-token')
 	const { uid } = await idCommonToken.checkToken(event.uniIdToken)

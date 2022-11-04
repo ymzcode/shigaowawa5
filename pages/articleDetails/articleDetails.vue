@@ -28,8 +28,8 @@
 				<view class="title">
 					{{ articleInfo.title || '' }}
 				</view>
-				<view class="like" @click="api_targetFavorite">
-					<u-icon name="heart-fill" color="#ffffff" size="34"></u-icon>
+				<view class="like" @click="onClickLike">
+					<u-icon name="heart-fill" :color="`${isLike ? '#eb4b42' : '#ffffff'}`" size="34"></u-icon>
 				</view>
 			</view>
 			<!-- 文章信息 -->
@@ -69,7 +69,8 @@
 				errorPage: false,
 				articleInfo: {},
 				swiperLoading: true,
-				commentTopTag: 'minus'
+				commentTopTag: 'minus',
+				likeInfo: []
 			}
 		},
 		computed: {
@@ -90,7 +91,10 @@
 				return []
 			},
 			isLike() {
-				return ''
+				return this.likeInfo.length > 0
+			},
+			isLogin() {
+				return uniCloud.getCurrentUserInfo().uid
 			}
 		},
 		onPageScroll(e) { //nvue暂不支持滚动监听，可用bindingx代替
@@ -104,6 +108,7 @@
 		},
 		onLoad(e) {
 			console.log('传递的参数', e)
+			console.log(this.isLogin)
 			if (!e.id) {
 				this.errorPage = true
 			}
@@ -113,17 +118,42 @@
 				duration: 0
 			});
 			this.api_getarticleByid()
+			
+			if (this.isLogin) {
+				this.api_getFavoriteArticleByid()
+			}
 		},
 		methods: {
+			onClickLike() {
+				if (this.isLogin) {
+					this.api_targetFavorite()
+				} else {
+					uni.showToast({
+						title: '请登录后操作',
+						icon: 'none'
+					})
+				}
+			},
+			api_getFavoriteArticleByid() {
+				this.$request('get-favorite-article-byid', {
+					id: this.id
+				}).then(res => {
+					console.log(res)
+					if (res.code === 0) {
+						this.likeInfo = res.data
+					}
+				})
+			},
 			api_targetFavorite() {
 				this.$request('target-favorite-article', {
 					id: this.id
 				}).then(res => {
 					console.log(res)
 					uni.showToast({
-						title: '',
+						title: this.isLike ? '取消喜欢成功' : '添加喜欢成功',
 						icon: 'none'
 					})
+					this.api_getFavoriteArticleByid()
 				})
 			},
 			back() {
