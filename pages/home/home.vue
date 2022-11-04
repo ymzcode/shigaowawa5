@@ -104,28 +104,20 @@
 				}
 			},
 			api_getArticle() {
-				uniCloud.callFunction({
-					name: 'home-get-article',
-					data: {
-						page: this.page,
-						size: this.size
-					}
+				this.$request('home-get-article', {
+					page: this.page,
+					size: this.size
 				}).then(res => {
 					console.log(res)
 					uni.stopPullDownRefresh();
-					if (res.result.code === 0) {
-						this.articleArr = this.articleArr.concat(res.result.data)
-						if (res.result.data.length > 0) {
+					if (res.code === 0) {
+						this.articleArr = this.articleArr.concat(res.data)
+						if (res.data.length > 0) {
 							this.page++
 						}
 					}
 				}).catch(err => {
 					uni.stopPullDownRefresh();
-					uni.showToast({
-						title: err.toString(),
-						icon: 'none'
-					})
-					console.error(err)
 				})
 			}
 		}

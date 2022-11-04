@@ -28,7 +28,7 @@
 				<view class="title">
 					{{ articleInfo.title || '' }}
 				</view>
-				<view class="like">
+				<view class="like" @click="api_targetFavorite">
 					<u-icon name="heart-fill" color="#ffffff" size="34"></u-icon>
 				</view>
 			</view>
@@ -112,29 +112,37 @@
 			this.api_getarticleByid()
 		},
 		methods: {
+			api_targetFavorite() {
+				this.$request('target-favorite-article', {
+					id: this.id
+				}).then(res => {
+					console.log(res)
+				})
+				// uniCloud.callFunction({
+				// 	name: 'target-favorite-article',
+				// 	data: {
+				// 		id: this.id
+				// 	}
+				// }).then(res => {
+				// 	console.log(res)
+				// }).catch(err => {
+				// 	console.error(err.errCode)
+				// })
+			},
 			back() {
 				uni.navigateBack(-1)
 			},
 			api_getarticleByid() {
 				this.swiperLoading = true
-				uniCloud.callFunction({
-					name: 'get-article-byid',
-					data: {
-						id: this.id
-					}
+				this.$request('get-article-byid', {
+					id: this.id
 				}).then(res => {
-					console.log(res)
 					this.swiperLoading = false
-					if (res.result.code === 0) {
-						this.articleInfo = res.result.data[0]
+					if (res.code === 0) {
+						this.articleInfo = res.data[0]
 					}
 				}).catch(err => {
 					this.swiperLoading = false
-					uni.showToast({
-						title: err.toString(),
-						icon: 'none'
-					})
-					console.error(err)
 				})
 			}
 		}

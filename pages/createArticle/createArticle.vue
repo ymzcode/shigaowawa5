@@ -218,29 +218,19 @@
 					album = fileList.map(item => item.fileID).toString()
 				})
 
-
-				return await uniCloud.callFunction({
-					name: 'create-article',
-					data: {
-						album: album,
-						title: this.title,
-						category_id: this.category
-					}
+				await this.$request('create-article', {
+					album: album,
+					title: this.title,
+					category_id: this.category
 				}).then(res => {
 					console.log(res)
-					if (res.result.code === 0) {
+					if (res.code === 0) {
 						uni.navigateBack(-1)
 						uni.showToast({
 							title: '发布成功',
 							icon: 'none'
 						})
 					}
-				}).catch(err => {
-					uni.showToast({
-						title: err.toString(),
-						icon: 'none'
-					})
-					console.error(err)
 				})
 			}
 		}

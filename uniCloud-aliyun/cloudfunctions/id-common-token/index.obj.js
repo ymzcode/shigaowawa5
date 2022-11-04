@@ -8,37 +8,24 @@ module.exports = {
 		this.uniIdCommon = uniIdCommon.createInstance({ // 创建uni-id实例，其上方法同uniID
 			clientInfo
 		})
-		this.dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云对象的clientInfo
-			clientInfo
-		})
 	},
 	async checkToken(token) {
 		if (!token) {
 			return {
 				errCode: 'TOKEN_IS_NULL',
-				errMsg: '登录状态无效'
+				errMsg: '无登录信息'
 			}
 		}
-		const {
-			errCode,
-			errMsg,
-			uid
-		} = await this.uniIdCommon.checkToken(token)
-
-		if (errCode) { // uni-id-common的checkToken接口可能返回`uni-id-token-expired`、`uni-id-check-token-failed`错误码，二者均会触发客户端跳转登陆页面
+		const tokenRes = await this.uniIdCommon.checkToken(token)
+		
+		if (tokenRes.errCode) {
 			return {
-				errCode,
-				errMsg
+				errCode: 'BACK_LOGIN',
+				errMsg: 'Token过期请重新登录'
 			}
 		}
 		
-		const collection = this.dbJQL.collection('uni-id-users')
-		const RRR = await collection.where({
-				_id: uid
-			}).field('nickname,avatar_file')
-			.get()
-
-		return RRR
+		return tokenRes
 	}
 	/**
 	 * method1方法描述

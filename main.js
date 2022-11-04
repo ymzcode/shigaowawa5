@@ -1,4 +1,5 @@
 import App from './App'
+import plugin from 'utils/plugin.js'
 
 // #ifndef VUE3
 import Vue from 'vue'
@@ -7,6 +8,7 @@ App.mpType = 'app'
 
 import uView from '@/uni_modules/uview-ui'
 Vue.use(uView)
+Vue.use(plugin)
 
 const app = new Vue({
 	...App
