@@ -11,15 +11,17 @@
 			</view>
 			<view class="menu"></view>
 		</view>
-		<u-sticky zIndex="0" bgColor="rgba(0,0,0,0)" offset-top="0">
+		<view style="height: 80vh;"></view>
+		<view class="swiper-fixed-wrapper">
 			<!-- 相册 -->
-			<u-swiper :loading="swiperLoading" style="width: 100%;" height="80vh" imgMode="heightFix" :list="album" indicator
-				indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)"></u-swiper>
-		</u-sticky>
+			<u-swiper :loading="swiperLoading" style="width: 100%;" height="80vh" imgMode="heightFix" :list="album"
+				indicator indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)"></u-swiper>
+		</view>
 
 
 		<!-- 评论区域 -->
 		<view class="comment-wrapper">
+			<!-- 评论输入框 -->
 			<view class="comment-top-tag">
 				<u-icon :name="commentTopTag" color="#eeeeee" size="20"></u-icon>
 			</view>
@@ -49,10 +51,26 @@
 					<text>{{ publish_date }}</text>
 				</view>
 			</view>
-			<view class="" v-for="item in 1000" :key="item">
+			<!-- 评论统计 -->
+			<view class="comment-count-wrapper">
+				<u-icon name="chat" color="#eeeeee" size="24"></u-icon>
+				<text>评论 (100)</text>
+			</view>
+			<u-sticky zIndex="2" bgColor="rgba(0,0,0,0)" :offset-top="offsetTop">
+				<view class="comment-input-wrapper">
+					<view class="comment-main-bg">
+						<u--input v-model="commentText" placeholder="发表评论" prefixIcon="chat-fill"
+							prefixIconStyle="font-size: 22px;color: #909399" suffixIcon="checkmark" border="none"
+							suffixIconStyle="color: #909399">
+						</u--input>
+					</view>
+				</view>
+			</u-sticky>
+			<view class="" v-for="item in 100" :key="item">
 				{{ item }}
 			</view>
 		</view>
+
 	</view>
 	<view v-else class="app-body-wrapper" style="justify-content: center;align-items: center;">
 		<u-navbar bgColor="#323538" leftIconColor="#ffffff" :autoBack="true">
@@ -70,7 +88,8 @@
 				articleInfo: {},
 				swiperLoading: true,
 				commentTopTag: 'minus',
-				likeInfo: []
+				likeInfo: [],
+				commentText: ''
 			}
 		},
 		computed: {
@@ -95,6 +114,10 @@
 			},
 			isLogin() {
 				return uniCloud.getCurrentUserInfo().uid
+			},
+			offsetTop() {
+				console.log(uni.getSystemInfoSync());
+				return uni.getSystemInfoSync().windowHeight - 66
 			}
 		},
 		onPageScroll(e) { //nvue暂不支持滚动监听，可用bindingx代替
@@ -118,7 +141,7 @@
 				duration: 0
 			});
 			this.api_getarticleByid()
-			
+
 			if (this.isLogin) {
 				this.api_getFavoriteArticleByid()
 			}
@@ -177,6 +200,40 @@
 </script>
 
 <style scoped lang="scss">
+	.comment-count-wrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin: 30rpx 0;
+		text {
+			margin-left: 20rpx;
+			font-size: 34rpx;
+		}
+	}
+	.comment-input-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+
+		.comment-main-bg {
+			width: 550rpx;
+			background-color: #3a3a3a;
+			padding: 20rpx 30rpx;
+			border-radius: 40rpx;
+		}
+	}
+
+	.swiper-fixed-wrapper {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		z-index: 0;
+	}
+
 	.comment-wrapper {
 		display: flex;
 		flex-direction: column;
@@ -194,7 +251,7 @@
 			padding-left: 50rpx;
 			padding-right: 50rpx;
 		}
-		
+
 		.comment-top-tag {
 			display: flex;
 			flex-direction: row;
