@@ -88,6 +88,9 @@
 					return this.articleInfo.album.split(',')
 				}
 				return []
+			},
+			isLike() {
+				return ''
 			}
 		},
 		onPageScroll(e) { //nvue暂不支持滚动监听，可用bindingx代替
@@ -117,17 +120,11 @@
 					id: this.id
 				}).then(res => {
 					console.log(res)
+					uni.showToast({
+						title: '',
+						icon: 'none'
+					})
 				})
-				// uniCloud.callFunction({
-				// 	name: 'target-favorite-article',
-				// 	data: {
-				// 		id: this.id
-				// 	}
-				// }).then(res => {
-				// 	console.log(res)
-				// }).catch(err => {
-				// 	console.error(err.errCode)
-				// })
 			},
 			back() {
 				uni.navigateBack(-1)
