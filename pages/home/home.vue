@@ -47,7 +47,9 @@
 			</view>
 		</view>
 		
-		<view style="height: 400rpx;width: 100%;"></view>
+		<u-loadmore :status="moreStatus" />
+		
+		<view style="height: 200rpx;width: 100%;"></view>
 	</view>
 </template>
 
@@ -68,7 +70,8 @@
 				articleArr: [],
 				refresherTriggered: false,
 				page: 1,
-				size: 10
+				size: 10,
+				moreStatus: 'loadmore'
 			}
 		},
 		computed: {
@@ -106,6 +109,7 @@
 				}
 			},
 			api_getArticle() {
+				this.moreStatus = 'loading'
 				this.$request('home-get-article', {
 					page: this.page,
 					size: this.size
@@ -116,6 +120,11 @@
 						this.articleArr = this.articleArr.concat(res.data)
 						if (res.data.length > 0) {
 							this.page++
+						}
+						if (res.data.length < this.size) {
+							this.moreStatus = 'nomore'
+						} else {
+							this.moreStatus = 'loadmore'
 						}
 					}
 				}).catch(err => {
