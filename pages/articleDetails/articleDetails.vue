@@ -121,7 +121,6 @@
 				return uniCloud.getCurrentUserInfo().uid
 			},
 			offsetTop() {
-				console.log(uni.getSystemInfoSync());
 				return uni.getSystemInfoSync().windowHeight - 66
 			}
 		},

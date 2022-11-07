@@ -1,7 +1,7 @@
 <template>
 	<view class="comment-card">
 		<view class="avatar">
-			<u-avatar src="" size="30"></u-avatar>
+			<u-avatar :src="userInfo.avatar_file.url" size="30"></u-avatar>
 		</view>
 		<view class="main">
 			<view class="content">
@@ -39,6 +39,9 @@
 		computed: {
 			commentTime() {
 				return uni.$u.timeFrom(this.commentData.comment_date)
+			},
+			userInfo() {
+				return this.commentData.user_id[0]
 			}
 		}
 	}

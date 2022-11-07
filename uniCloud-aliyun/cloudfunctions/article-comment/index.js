@@ -1,4 +1,5 @@
 'use strict';
+
 exports.main = async (event, context) => {
 	//event为客户端上传的参数
 	console.log('event : ', event)
@@ -13,13 +14,26 @@ exports.main = async (event, context) => {
 		event,
 		context
 	})
+	
+	const admin_dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云函数的event和context
+		event,
+		context
+	})
+	
+	admin_dbJQL.setUser({
+		role: ['admin']
+	})
+	
 
-	const idCommonToken = uniCloud.importObject('id-common-token')
-	const {
-		uid
-	} = await idCommonToken.checkToken(event.uniIdToken)
-
-	const collection = dbJQL.collection('opendb-news-comments')
+	let t_uid = null
+	// get可以游客访问
+	if (event.action !== 'get') {
+		const idCommonToken = uniCloud.importObject('id-common-token')
+		const {
+			uid
+		} = await idCommonToken.checkToken(event.uniIdToken)
+		t_uid = uid
+	}
 
 	let res = {}
 
@@ -27,19 +41,25 @@ exports.main = async (event, context) => {
 		case 'get': {
 			const skip_count = (event.page - 1) * event.size
 			const limit_count = Number(event.size)
-			res = await collection.where({
-					article_id: event.id
-				}).skip(skip_count) // 跳过前20条
+
+			const user = admin_dbJQL.collection('uni-id-users').field('_id,avatar_file,nickname').getTemp()
+			const comment = dbJQL.collection('opendb-news-comments').where({
+				article_id: event.id
+			}).getTemp()
+			
+			res = await admin_dbJQL.collection(comment, user).foreignKey('opendb-news-comments.user_id').skip(
+					skip_count) // 跳过前20条
 				.limit(limit_count) // 获取20条
 				.get({
-					getCount:true
+					getCount: true
 				})
+
 			break
 		}
 		case 'add': {
-			res = await collection.add({
+			res = await dbJQL.collection('opendb-news-comments').add({
 				article_id: event.id,
-				user_id: uid,
+				user_id: t_uid,
 				comment_content: event.comment_content,
 				like_count: 0,
 				comment_type: 0
@@ -50,9 +70,9 @@ exports.main = async (event, context) => {
 			break
 		}
 		case 'reply': {
-			res = await collection.add({
+			res = await dbJQL.collection('opendb-news-comments').add({
 				article_id: event.id,
-				user_id: uid,
+				user_id: t_uid,
 				comment_content: event.comment_content,
 				like_count: 0,
 				comment_type: 1,
