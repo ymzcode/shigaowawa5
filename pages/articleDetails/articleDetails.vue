@@ -72,8 +72,8 @@
 			</u-sticky>
 			<article-comment style="margin-top: -100rpx;" ref="articleComment" @getCommentCount="getCommentCount">
 			</article-comment>
+			
 		</view>
-
 	</view>
 	<view v-else class="app-body-wrapper" style="justify-content: center;align-items: center;">
 		<u-navbar bgColor="#323538" leftIconColor="#ffffff" :autoBack="true">
@@ -132,6 +132,10 @@
 			} else if (this.commentTopTag !== 'minus' && e.scrollTop > 8) {
 				this.commentTopTag = 'minus'
 			}
+		},
+		onReachBottom(e) {
+			console.log('aaaaaa');
+			this.$refs.articleComment.next()
 		},
 		onLoad(e) {
 			console.log('传递的参数', e)
