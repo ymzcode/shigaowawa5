@@ -47,14 +47,14 @@
 					</view>
 				</view>
 				<view class="time">
-					<u-icon name="clock-fill" color="#eeeeee" size="16"></u-icon>
+					<u-icon name="clock-fill" color="#eeeeee" size="14"></u-icon>
 					<text>{{ publish_date }}</text>
 				</view>
 			</view>
 			<!-- 评论统计 -->
 			<view class="comment-count-wrapper">
 				<u-icon name="chat" color="#eeeeee" size="24"></u-icon>
-				<text>评论 (100)</text>
+				<text>评论 ({{ commentCount }})</text>
 			</view>
 			<u-sticky zIndex="2" bgColor="rgba(0,0,0,0)" :offset-top="offsetTop">
 				<view class="comment-input-wrapper">
@@ -69,9 +69,7 @@
 					</view>
 				</view>
 			</u-sticky>
-			<view class="" v-for="item in 100" :key="item">
-				{{ item }}
-			</view>
+			<article-comment style="margin-top: -100rpx;" ref="articleComment" @getCommentCount="getCommentCount"></article-comment>
 		</view>
 
 	</view>
@@ -92,7 +90,9 @@
 				swiperLoading: true,
 				commentTopTag: 'minus',
 				likeInfo: [],
-				commentText: ''
+				commentText: '',
+				// 评论数量
+				commentCount: 0
 			}
 		},
 		computed: {
@@ -144,14 +144,18 @@
 				duration: 0
 			});
 			this.api_getarticleByid()
-
+			
 			if (this.isLogin) {
 				this.api_getFavoriteArticleByid()
 			}
+			
+			this.$refs.articleComment.init(this.id)
 		},
 		methods: {
+			getCommentCount(count) {
+				this.commentCount = count
+			},
 			sendCommentContent() {
-				console.log(111);
 				if (!this.isLogin) {
 					uni.showToast({
 						title: '请登录后操作',
@@ -166,14 +170,14 @@
 					})
 					return
 				}
-				uni.$u.throttle(this.api_articleComment('add'), 2000)
-			},
-			api_articleComment(action) {
-				this.$request('article-comment', {
-					action: action,
+				uni.$u.throttle(this.api_articleComment('add', {
+					action: 'add',
 					id: this.id,
 					comment_content: this.commentText
-				}).then(res => {
+				}), 2000)
+			},
+			api_articleComment(action, data) {
+				this.$request('article-comment', data).then(res => {
 					console.log(res)
 					if (res.code === 0) {
 						uni.showToast({
