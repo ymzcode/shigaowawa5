@@ -18,7 +18,10 @@
 					url: '/pages/createArticle/createArticle'
 				})
 			}
-		}
+		},
+		onTabItemTap(e) {
+			this.$store.dispatch('tabbar/changeTabbarIcon', e)
+		},
 	}
 </script>
 

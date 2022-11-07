@@ -1,0 +1,26 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"schema": {
+		"bsonType": "object",
+		"required": [
+			"icon"
+		],
+		"permission": {
+			"read": true
+		},
+		"properties": {
+			"_id": {
+				"description": "存储文档 ID，系统自动生成"
+			},
+			"icon": {
+				"bsonType": "string",
+				"description": "菜单图标",
+				"trim": "both"
+			},
+			"name": {
+				"bsonType": "string",
+				"description": "名称"
+			}
+		}
+	}
+}

@@ -76,6 +76,9 @@
 				return store.userInfo
 			}
 		},
+		onTabItemTap(e) {
+			this.$store.dispatch('tabbar/changeTabbarIcon', e)
+		},
 		created() {
 			this.api_getArticle()
 		},
@@ -85,7 +88,6 @@
 			this.articleArr = []
 			this.page = 1
 			this.api_getArticle()
-
 		},
 		onReachBottom() {
 			console.log('chudichudi');

@@ -1,5 +1,4 @@
 'use strict';
-const uniID = require('uni-id-common')
 const db = uniCloud.database()
 const $cmd = db.command
 exports.main = async (event, context) => {
