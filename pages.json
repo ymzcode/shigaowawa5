@@ -117,20 +117,20 @@
 		"backgroundColor": "#333333",
 		"list": [{
 				"pagePath": "pages/home/home",
-				"iconPath": "static/tabbar/fn.png",
-				"selectedIconPath": "static/tabbar/fn1.png",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-fill.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/myArticle/myArticle",
-				"iconPath": "static/tabbar/storage.png",
-				"selectedIconPath": "static/tabbar/storage1.png",
+				"iconPath": "static/tabbar/plus-circle.png",
+				"selectedIconPath": "static/tabbar/plus-circle-fill.png",
 				"text": "发布"
 			},
 			{
 				"pagePath": "pages/like/like",
-				"iconPath": "static/tabbar/yun.png",
-				"selectedIconPath": "static/tabbar/yun1.png",
+				"iconPath": "static/tabbar/heart.png",
+				"selectedIconPath": "static/tabbar/heart-fill.png",
 				"text": "喜欢"
 			}
 		]

@@ -22,7 +22,7 @@ export default {
 			}).then(res => {
 				if (res.result.code === 0) {
 					commit('SET_TABBAR_ICON_ARR', res.result.data)
-					dispatch('changeTabbarIcon')
+					dispatch('changeTabbarIcon', data)
 				}
 			})
 		},
@@ -32,7 +32,7 @@ export default {
 				return
 			}
 			if (state.tabbarIconArr.length === 0) {
-				dispatch('setTabbarIconArr')
+				dispatch('setTabbarIconArr', data)
 			} else {
 				const arr = state.tabbarIconArr.filter(item => state.selectIcon.indexOf(item._id) === -1)
 				const num = Math.round(Math.random()* (arr.length - 1))
@@ -50,6 +50,8 @@ export default {
 					index: data.index,
 					selectedIconPath: selectedIconPath
 				})
+				
+				uni.vibrateShort({})
 			}
 		}
 	}
