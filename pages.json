@@ -101,6 +101,13 @@
 				"navigationStyle": "custom"
 			}
 
+		}, {
+			"path": "pages/like/like",
+			"style": {
+				"navigationBarTitleText": "我的喜欢",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"tabBar": {
@@ -119,13 +126,13 @@
 				"iconPath": "static/tabbar/storage.png",
 				"selectedIconPath": "static/tabbar/storage1.png",
 				"text": "发布"
+			},
+			{
+				"pagePath": "pages/like/like",
+				"iconPath": "static/tabbar/yun.png",
+				"selectedIconPath": "static/tabbar/yun1.png",
+				"text": "喜欢"
 			}
-			// {
-			// 	"pagePath": "pages/createArticle/createArticle",
-			// 	"iconPath": "static/tabbar/yun.png",
-			// 	"selectedIconPath": "static/tabbar/yun1.png",
-			// 	"text": "喜欢"
-			// }
 		]
 	},
 	"globalStyle": {

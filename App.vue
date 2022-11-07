@@ -5,6 +5,12 @@
 	export default {
 		onLaunch: async function() {
 			console.log('App Launch')
+			
+			uni.setTabBarItem({
+				index: 0,
+				selectedIconPath: 'https://pic1.imgdb.cn/item/6368b4a616f2c2beb1e334e1.png'
+			})
+			
 			await uniIdPageInit()
 
 			// // 如果存在token检查token
