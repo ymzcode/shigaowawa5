@@ -14,7 +14,7 @@
 					<text>回复</text>
 				</view>
 				<view class="time">
-					<u-icon name="clock" color="#eeeeee" size="14"></u-icon>
+					<u-icon name="clock" color="#eeeeee" size="12"></u-icon>
 					<text>{{ commentTime }}</text>
 				</view>
 			</view>
@@ -102,7 +102,7 @@
 					flex-direction: row;
 					align-items: center;
 					justify-content: flex-start;
-					font-size: 28rpx;
+					font-size: 26rpx;
 					color: #eeeeee;
 					text {
 						margin-left: 10rpx;

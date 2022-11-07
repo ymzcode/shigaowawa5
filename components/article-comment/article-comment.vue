@@ -1,6 +1,8 @@
 <template>
 	<view class="wrapper">
 		<comment-card style="width: 100%;" v-for="item in commentArr" :key="item._id" :commentData="item"></comment-card>
+		<!-- 占位 -->
+		<view style="height: 160rpx;"></view>
 	</view>
 </template>
 

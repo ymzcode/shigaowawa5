@@ -63,13 +63,15 @@
 							prefixIconStyle="font-size: 22px;color: #909399" border="none" maxlength="300" clearable
 							color="#ffffff">
 							<template slot="suffix">
-								<u-button v-if="commentText" type="primary" size="mini" text="发送" @click="sendCommentContent"></u-button>
+								<u-button v-if="commentText" type="primary" size="mini" text="发送"
+									@click="sendCommentContent"></u-button>
 							</template>
 						</u-input>
 					</view>
 				</view>
 			</u-sticky>
-			<article-comment style="margin-top: -100rpx;" ref="articleComment" @getCommentCount="getCommentCount"></article-comment>
+			<article-comment style="margin-top: -100rpx;" ref="articleComment" @getCommentCount="getCommentCount">
+			</article-comment>
 		</view>
 
 	</view>
@@ -144,11 +146,11 @@
 				duration: 0
 			});
 			this.api_getarticleByid()
-			
+
 			if (this.isLogin) {
 				this.api_getFavoriteArticleByid()
 			}
-			
+
 			this.$refs.articleComment.init(this.id)
 		},
 		methods: {
