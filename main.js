@@ -1,9 +1,11 @@
 import App from './App'
 import plugin from 'utils/plugin.js'
+import store from './store'
 
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
+Vue.prototype.$store = store
 App.mpType = 'app'
 
 import uView from '@/uni_modules/uview-ui'
