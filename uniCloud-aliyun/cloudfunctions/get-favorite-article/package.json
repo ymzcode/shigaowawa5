@@ -1,0 +1,7 @@
+{
+  "name": "get-favorite-article",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

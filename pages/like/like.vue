@@ -1,9 +1,17 @@
 <template>
 	<view class="app-body-wrapper">
 
-		<view class="no-data">
+		<view v-if="nodata || !isLogin" class="no-data">
 			<canvas id="no-data" type="2d"></canvas>
-			<text>还没有喜欢的作品</text>
+			<text>{{ !isLogin ? '登录后，再添加一个喜欢的作品吧' : '还没有喜欢的作品哦' }}</text>
+			<u-button :customStyle="{
+				width: '200rpx',
+				marginTop: '20rpx'
+			}" class="login-btn" v-if="!isLogin" text="登录" @click="gotoLogin"></u-button>
+		</view>
+		
+		<view v-else class="my-favorite">
+			
 		</view>
 
 	</view>
@@ -14,7 +22,12 @@
 	export default {
 		data() {
 			return {
-				albumArr: [],
+				nodata: true
+			}
+		},
+		computed: {
+			isLogin() {
+				return uniCloud.getCurrentUserInfo().uid
 			}
 		},
 		onTabItemTap(e) {
@@ -24,6 +37,11 @@
 			this.initNoData()
 		},
 		methods: {
+			gotoLogin() {
+				uni.navigateTo({
+					url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
+				})
+			},
 			initNoData() {
 				uni.createSelectorQuery().selectAll('#no-data').node(res => {
 					const width = 300
@@ -53,13 +71,17 @@
 </script>
 
 <style scoped lang="scss">
+	.my-favorite {
+		display: flex;
+		flex-direction: column;
+	}
 	.no-data {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		margin-top: 100rpx;
-
+		
 		#no-data {
 			width: 300px;
 			height: 200px;
