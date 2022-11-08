@@ -1,16 +1,16 @@
 <template>
 	<view class="app-body-wrapper">
-		<u-empty mode="favor" text="还没有喜欢的作品">
-		</u-empty>
-		
-		<u-upload :fileList="albumArr" @afterRead="afterRead" accept="image" @delete="deletePic"
-			sizeType="compressed" name="3" multiple :maxCount="9">
-		</u-upload>
-		
+
+		<view class="no-data">
+			<canvas id="no-data" type="2d"></canvas>
+			<text>还没有喜欢的作品</text>
+		</view>
+
 	</view>
 </template>
 
 <script>
+	import lottie from 'lottie-miniprogram'
 	export default {
 		data() {
 			return {
@@ -20,46 +20,53 @@
 		onTabItemTap(e) {
 			this.$store.dispatch('tabbar/changeTabbarIcon', e)
 		},
+		onLoad() {
+			this.initNoData()
+		},
 		methods: {
-			afterRead(event) {
-				console.log(event);
-				let lists = [].concat(event.file)
-				let fileListLen = this.albumArr.length
-				console.log(lists, fileListLen);
-				this.albumArr = [...this.albumArr, ...lists]
-			},
-			deletePic(event) {
-				console.log(event);
-				this.albumArr.splice(event.index, 1)
-			},
-			async submit() {
-				let processAll = []
-				this.albumArr.map(item => {
-					const uploadResult = uniCloud.uploadFile({
-						filePath: item.thumb,
-						cloudPath: 'a.jpg',
-						fileType: 'image',
-						onUploadProgress: function(progressEvent) {
-							// console.log(progressEvent);
-							var percentCompleted = Math.round(
-								(progressEvent.loaded * 100) / progressEvent.total
-							);
+			initNoData() {
+				uni.createSelectorQuery().selectAll('#no-data').node(res => {
+					const width = 300
+					const height = 200
+					const canvas = res[0].node
+					const context = canvas.getContext('2d')
+					const dpr = uni.getSystemInfoSync().pixelRatio
+					canvas.width = width * dpr
+					canvas.height = height * dpr
+					context.scale(dpr, dpr)
+					
+					lottie.setup(canvas)
+					lottie.loadAnimation({
+						loop: true,
+						autoplay: true,
+						// animationData: require('@/static/json/125880-shape-animation.json'),
+						// path: 'https://assets1.lottiefiles.com/packages/lf20_skMCZaRDnL.json',
+						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/2cf1c5ee-341b-4bda-9034-cca6bb02f3f2.json',
+						rendererSettings: {
+							context
 						}
 					})
-					processAll.push(uploadResult)
-				})
-				
-				let album = ''
-				
-				const RES = await Promise.all(processAll).then(fileList => {
-					console.log(fileList);
-					album = fileList.map(item => item.fileID).toString()
-				})
+				}).exec()
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped lang="scss">
+	.no-data {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-top: 100rpx;
 
+		#no-data {
+			width: 300px;
+			height: 200px;
+		}
+
+		text {
+			color: #fff;
+		}
+	}
 </style>
