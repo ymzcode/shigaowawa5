@@ -17,7 +17,9 @@
 			</view>
 			<!-- 欢迎语 -->
 			<view class="welcome-wrapper">
-				<text>Hello</text>
+				<view class="hello-wrapper">
+					<canvas id="hello" type="2d"></canvas>
+				</view>
 				<text>{{userInfo.nickname}}</text>
 			</view>
 
@@ -46,14 +48,15 @@
 				</u-grid>
 			</view>
 		</view>
-		
+
 		<u-loadmore :status="moreStatus" />
-		
+
 		<view style="height: 200rpx;width: 100%;"></view>
 	</view>
 </template>
 
 <script>
+	import lottie from 'lottie-miniprogram'
 	import {
 		store
 	} from '@/uni_modules/uni-id-pages/common/store.js'
@@ -85,6 +88,9 @@
 		created() {
 			this.api_getArticle()
 		},
+		onReady() {
+			this.initHello()
+		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
@@ -97,6 +103,29 @@
 			this.api_getArticle()
 		},
 		methods: {
+			initHello() {
+				uni.createSelectorQuery().selectAll('#hello').node(res => {
+					console.log(res);
+					const width = 100
+					const height = 100
+					const canvas = res[0].node
+					const context = canvas.getContext('2d')
+					const dpr = uni.getSystemInfoSync().pixelRatio
+					canvas.width = width * dpr
+					canvas.height = height * dpr
+					context.scale(dpr, dpr)
+
+					lottie.setup(canvas)
+					const lottieView = lottie.loadAnimation({
+						loop: true,
+						autoplay: true,
+						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/16faff44-c18b-4ce6-88ed-545a1eb4166d.json',
+						rendererSettings: {
+							context
+						}
+					})
+				}).exec()
+			},
 			gotoUser() {
 				if (this.userInfo._id) {
 					uni.navigateTo({
@@ -181,6 +210,23 @@
 		justify-content: flex-start;
 		margin: $bj-pd;
 		margin-bottom: 30rpx;
+		max-width: 200rpx;
+		max-height: 200rpx;
+
+		.hello-wrapper {
+			width: 100px;
+			height: 30px;
+			position: relative;
+			overflow: hidden;
+			#hello {
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				top: -35px;
+				left: -20px;
+			}
+		}
+		
 	}
 
 	.image-card {
