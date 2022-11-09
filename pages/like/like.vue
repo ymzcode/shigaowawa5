@@ -1,70 +1,110 @@
 <template>
 	<view class="app-body-wrapper">
 
-		<view v-if="nodata || !isLogin" class="no-data">
-			<canvas id="no-data" type="2d"></canvas>
+		<view v-if="noData || !isLogin" class="no-data">
+			<lottie-like-no-data></lottie-like-no-data>
 			<text>{{ !isLogin ? '登录后，再添加一个喜欢的作品吧' : '还没有喜欢的作品哦' }}</text>
 			<u-button :customStyle="{
 				width: '200rpx',
 				marginTop: '20rpx'
 			}" class="login-btn" v-if="!isLogin" text="登录" @click="gotoLogin"></u-button>
 		</view>
-		
+
 		<view v-else class="my-favorite">
-			
+			<u-grid :col="2" :border="false">
+				<u-grid-item v-for="item in articleArr" :key="item._id">
+					<draw-image :resObject="item.article_id[0]"></draw-image>
+				</u-grid-item>
+			</u-grid>
+			<u-loadmore :status="moreStatus" />
 		</view>
 
 	</view>
 </template>
 
 <script>
-	import lottie from 'lottie-miniprogram'
+	import {
+		store
+	} from '@/uni_modules/uni-id-pages/common/store.js'
+	
 	export default {
 		data() {
 			return {
-				nodata: true
+				articleArr: [],
+				page: 1,
+				size: 10,
+				moreStatus: 'loadmore'
 			}
 		},
 		computed: {
 			isLogin() {
-				return uniCloud.getCurrentUserInfo().uid
+				return uniCloud.getCurrentUserInfo().uid && this.userInfo
+			},
+			noData() {
+				return this.articleArr.length === 0
+			},
+			userInfo() {
+				return store.userInfo
 			}
+		},
+		onShow() {
+			uni.startPullDownRefresh()
 		},
 		onTabItemTap(e) {
 			this.$store.dispatch('tabbar/changeTabbarIcon', e)
 		},
-		onLoad() {
-			this.initNoData()
+		// 下拉刷新
+		onPullDownRefresh() {
+			console.log('refresh');
+			this.articleArr = []
+			this.page = 1
+			this.api_getFavorite()
+		},
+		onReachBottom() {
+			this.api_getFavorite()
 		},
 		methods: {
+			api_getFavorite() {
+				if (!this.isLogin) {
+					uni.stopPullDownRefresh();
+					return
+				}
+				this.moreStatus = 'loading'
+				this.$request('get-favorite-article', {
+					page: this.page,
+					size: this.size
+				}).then(res => {
+					console.log(res);
+					uni.stopPullDownRefresh();
+					if (res.code === 0) {
+						this.articleArr = this.articleArr.concat(res.data)
+						
+						if (res.data.length > 0) {
+							this.page++
+						}
+						
+						if (res.data.length < this.size) {
+							this.moreStatus = 'nomore'
+						} else {
+							this.moreStatus = 'loadmore'
+						}
+						
+						if (res.count === 0) {
+							this.articleArr = []
+						} else {
+							this.desNoData()
+						}
+					}
+				}).catch(err => {
+					console.error(err)
+					uni.stopPullDownRefresh();
+					this.moreStatus = 'loadmore'
+				})
+			},
 			gotoLogin() {
 				uni.navigateTo({
 					url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
 				})
-			},
-			initNoData() {
-				uni.createSelectorQuery().selectAll('#no-data').node(res => {
-					const width = 300
-					const height = 200
-					const canvas = res[0].node
-					const context = canvas.getContext('2d')
-					const dpr = uni.getSystemInfoSync().pixelRatio
-					canvas.width = width * dpr
-					canvas.height = height * dpr
-					context.scale(dpr, dpr)
-					
-					lottie.setup(canvas)
-					lottie.loadAnimation({
-						loop: true,
-						autoplay: true,
-						// animationData: require('@/static/json/125880-shape-animation.json'),
-						// path: 'https://assets1.lottiefiles.com/packages/lf20_skMCZaRDnL.json',
-						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/2cf1c5ee-341b-4bda-9034-cca6bb02f3f2.json',
-						rendererSettings: {
-							context
-						}
-					})
-				}).exec()
 			}
 		}
 	}
@@ -75,17 +115,13 @@
 		display: flex;
 		flex-direction: column;
 	}
+
 	.no-data {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		margin-top: 100rpx;
-		
-		#no-data {
-			width: 300px;
-			height: 200px;
-		}
 
 		text {
 			color: #fff;

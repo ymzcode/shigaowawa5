@@ -38,7 +38,7 @@
 			// 是否展示喜欢
 			isShowLike: {
 				type: Boolean,
-				default: true
+				default: false
 			},
 			// resObject
 			resObject: {
