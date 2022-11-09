@@ -1,0 +1,7 @@
+{
+  "name": "get-my-article",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

@@ -90,7 +90,7 @@
 			"path": "pages/myArticle/myArticle",
 			"style": {
 				"navigationBarTitleText": "作品",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 
 		}, {

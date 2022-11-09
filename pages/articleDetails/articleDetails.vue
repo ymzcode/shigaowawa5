@@ -122,9 +122,6 @@
 			},
 			offsetTop() {
 				return uni.getSystemInfoSync().windowHeight - 66
-			},
-			reply() {
-				return this.$store.getters['comment/reply']
 			}
 		},
 		onPageScroll(e) { //nvue暂不支持滚动监听，可用bindingx代替
