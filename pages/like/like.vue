@@ -91,8 +91,6 @@
 						
 						if (res.count === 0) {
 							this.articleArr = []
-						} else {
-							this.desNoData()
 						}
 					}
 				}).catch(err => {
