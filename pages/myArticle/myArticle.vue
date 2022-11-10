@@ -28,6 +28,7 @@
 </template>
 
 <script>
+	import { createArticleShare } from '@/utils/share.js'
 	import {
 		store
 	} from '@/uni_modules/uni-id-pages/common/store.js'
@@ -37,26 +38,20 @@
 				articleArr: [],
 				page: 1,
 				size: 10,
-				moreStatus: 'loadmore'
+				moreStatus: 'loadmore',
+				noData: false
 			}
 		},
 		onShareAppMessage(res) {
 			console.log(res)
 			if (res.from === 'button') {
 				const message = res.target.dataset
-				return {
-					title: `[DIY手工展览馆] - ${message.title}`,
-					imageUrl: message.album.split(',')[0],
-					path: `/pages/articleDetails/articleDetails?id=${message.id}`
-				}
+				return createArticleShare(message.title, message.album.split(',')[0], `/pages/articleDetails/articleDetails?id=${message.id}`)
 			}
 		},
 		computed: {
 			isLogin() {
 				return uniCloud.getCurrentUserInfo().uid && this.userInfo
-			},
-			noData() {
-				return this.articleArr.length === 0
 			},
 			userInfo() {
 				return store.userInfo
@@ -106,6 +101,7 @@
 
 						if (res.count === 0) {
 							this.articleArr = []
+							this.noData = true
 						}
 					}
 

@@ -28,9 +28,6 @@
 
 			<u-button type="primary" text="发布" @click="submit"></u-button>
 			<u-button type="primary" text="重置" @click="reSet"></u-button>
-			<navigator open-type="navigate" url="/uni_modules/uni-id-pages/pages/login/login-withoutpwd">
-				<u-button type="primary" text="注册"></u-button>
-			</navigator>
 			
 		</view>
 	</scroll-view>
@@ -51,9 +48,6 @@
 						label: '石膏娃娃',
 						id: '63609853548ef40001a0dd7f'
 					}, {
-						label: '流体',
-						id: '63609863702e9d0001d5a7f0'
-					}, {
 						label: '其他',
 						id: '6360987abf704d00012e6afa'
 					}]
@@ -71,7 +65,6 @@
 				this.title = ''
 			},
 			onShowCategory() {
-				console.log(111);
 				this.showCategory = true
 			},
 			// 回调参数为包含columnIndex、value、values

@@ -33,15 +33,13 @@
 				articleArr: [],
 				page: 1,
 				size: 10,
-				moreStatus: 'loadmore'
+				moreStatus: 'loadmore',
+				noData: false
 			}
 		},
 		computed: {
 			isLogin() {
 				return uniCloud.getCurrentUserInfo().uid && this.userInfo
-			},
-			noData() {
-				return this.articleArr.length === 0
 			},
 			userInfo() {
 				return store.userInfo
@@ -91,6 +89,7 @@
 						
 						if (res.count === 0) {
 							this.articleArr = []
+							this.noData = true
 						}
 					}
 				}).catch(err => {

@@ -56,13 +56,6 @@
 				animationObj: null
 			};
 		},
-		onShareAppMessage(res) {
-			console.log(res)
-			return {
-				title: '自定义分享标题',
-				path: `/pages/articleDetails/articleDetails?id=${this.cardData._id}`
-			}
-		},
 		computed: {
 			// 发表时间
 			publish_date() {

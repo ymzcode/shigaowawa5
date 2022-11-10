@@ -16,7 +16,8 @@
 		<view class="swiper-fixed-wrapper">
 			<!-- 相册 -->
 			<u-swiper :loading="swiperLoading" height="80vh" imgMode="aspectFit" :list="album" indicator
-				indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)" @click.stop="onClickSwiper"></u-swiper>
+				indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)"
+				@click.stop="onClickSwiper"></u-swiper>
 		</view>
 
 
@@ -46,6 +47,13 @@
 						<u-icon name="heart-fill" color="#ffffff" size="18"></u-icon>
 						<text>{{ like_count }}喜欢</text>
 					</view>
+
+					<button class="share" style="padding: 0;border: none;background: none;" :data-id="articleInfo._id"
+						:data-title="articleInfo.title" :data-album="articleInfo.album" open-type="share">
+						<u-icon name="share-square" color="#ffffff" size="18"></u-icon>
+						<text>分享</text>
+					</button>
+
 				</view>
 				<view class="time">
 					<u-icon name="clock-fill" color="#eeeeee" size="14"></u-icon>
@@ -86,6 +94,7 @@
 </template>
 
 <script>
+	import { createArticleShare } from '@/utils/share.js'
 	export default {
 		data() {
 			return {
@@ -139,6 +148,12 @@
 		},
 		onReachBottom(e) {
 			this.$refs.articleComment.next()
+		},
+		onShareAppMessage(res) {
+			if (res.from === 'button') {
+				const message = res.target.dataset
+				return createArticleShare(message.title, message.album.split(',')[0], `/pages/articleDetails/articleDetails?id=${message.id}`)
+			}
 		},
 		onLoad(e) {
 			console.log('传递的参数', e)
@@ -236,7 +251,7 @@
 							this.showLikeSuccess = false
 						}, 4000)
 					}
-					
+
 					uni.showToast({
 						title: this.isLike ? '取消喜欢成功' : '添加喜欢成功',
 						icon: 'none'
@@ -379,6 +394,17 @@
 				display: flex;
 				flex-direction: row;
 				align-items: center;
+			}
+
+			.share {
+				margin-left: 50rpx;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				color: #fff !important;
+				&::after{
+					border: none;
+				}
 			}
 
 			.time {
