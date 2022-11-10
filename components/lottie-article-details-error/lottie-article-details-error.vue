@@ -1,5 +1,5 @@
 <template>
-	<canvas id="no-data" class="no-data" type="2d"></canvas>
+	<canvas id="lottie-article-details-error" class="lottie-article-details-error" type="2d"></canvas>
 </template>
 
 
@@ -23,7 +23,7 @@
 		},
 		methods: {
 			initNoData() {
-				uni.createSelectorQuery().in(this).selectAll('#no-data').node(res => {
+				uni.createSelectorQuery().in(this).selectAll('#lottie-article-details-error').node(res => {
 					const width = 300
 					const height = 200
 					const canvas = res[0].node
@@ -52,7 +52,7 @@
 </script>
 
 <style scoped lang="scss">
-	.no-data {
+	.lottie-article-details-error {
 		width: 300px;
 		height: 200px;
 	}

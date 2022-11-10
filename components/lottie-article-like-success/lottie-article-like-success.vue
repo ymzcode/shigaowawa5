@@ -1,16 +1,18 @@
 <template>
-	<canvas class="no-data" id="lottie-my-article-no-data" type="2d"></canvas>
+	<canvas id="lottie-article-like-success" class="lottie-article-like-success" type="2d"></canvas>
 </template>
+
 
 <script>
 	import lottie from 'lottie-miniprogram'
 	let nodataView = null
 	export default {
-		name: "lottie-my-article-no-data",
+		name: "lottie-article-like-success",
 		data() {
 			return {
-
 			};
+		},
+		computed: {
 		},
 		mounted() {
 			this.$nextTick(() => {
@@ -22,23 +24,21 @@
 		},
 		methods: {
 			initNoData() {
-				uni.createSelectorQuery().in(this).selectAll('#lottie-my-article-no-data').node(res => {
-					const width = 300
-					const height = 200
+				uni.createSelectorQuery().in(this).selectAll('#lottie-article-like-success').node(res => {
+					const width = uni.getSystemInfoSync().windowWidth
+					const height = uni.getSystemInfoSync().windowHeight
 					const canvas = res[0].node
 					const context = canvas.getContext('2d')
 					const dpr = uni.getSystemInfoSync().pixelRatio
 					canvas.width = width * dpr
 					canvas.height = height * dpr
 					context.scale(dpr, dpr)
-		
+
 					lottie.setup(canvas)
 					nodataView = lottie.loadAnimation({
-						loop: true,
+						loop: false,
 						autoplay: true,
-						// animationData: require('@/static/json/125880-shape-animation.json'),
-						// path: 'https://assets1.lottiefiles.com/packages/lf20_skMCZaRDnL.json',
-						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/db8bc348-29a8-43e3-961f-8b88a35fd27c.json',
+						path: 'https://assets10.lottiefiles.com/packages/lf20_rovf9gzu.json',
 						rendererSettings: {
 							context
 						}
@@ -53,8 +53,11 @@
 </script>
 
 <style scoped lang="scss">
-	.no-data {
-		width: 300px;
-		height: 200px;
+	.lottie-article-like-success {
+		position: fixed;
+		z-index: 8;
+		top: 0;
+		width: 100vw;
+		height: 100vh;
 	}
 </style>

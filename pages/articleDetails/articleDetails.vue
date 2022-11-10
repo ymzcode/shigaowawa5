@@ -1,5 +1,6 @@
 <template>
 	<view v-if="!errorPage" class="app-body-wrapper">
+		<lottie-article-like-success v-if="showLikeSuccess"></lottie-article-like-success>
 		<!-- 这里是状态栏 -->
 		<!-- <view class="status_bar"></view> -->
 		<!-- 返回工具栏 -->
@@ -14,8 +15,8 @@
 		<view style="height: 80vh;"></view>
 		<view class="swiper-fixed-wrapper">
 			<!-- 相册 -->
-			<u-swiper :loading="swiperLoading" style="width: 100%;" height="80vh" imgMode="heightFix" :list="album"
-				indicator indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)"></u-swiper>
+			<u-swiper :loading="swiperLoading" height="80vh" imgMode="aspectFit" :list="album" indicator
+				indicatorMode="line" circular :radius="0" interval="5000" bgColor="raba(0,0,0,0)" @click.stop="onClickSwiper"></u-swiper>
 		</view>
 
 
@@ -72,7 +73,7 @@
 			</u-sticky>
 			<article-comment style="margin-top: -100rpx;" ref="articleComment" @getCommentCount="getCommentCount">
 			</article-comment>
-			
+
 		</view>
 	</view>
 	<view v-else class="app-body-wrapper" style="justify-content: center;align-items: center;">
@@ -80,7 +81,7 @@
 		</u-navbar>
 		<lottie-article-details-error></lottie-article-details-error>
 		<text>作品已被艺术家删除，
-		再转转其他作家的吧！</text>
+			再转转其他作家的吧！</text>
 	</view>
 </template>
 
@@ -96,7 +97,8 @@
 				likeInfo: [],
 				commentText: '',
 				// 评论数量
-				commentCount: 0
+				commentCount: 0,
+				showLikeSuccess: false
 			}
 		},
 		computed: {
@@ -158,6 +160,13 @@
 			this.$refs.articleComment && this.$refs.articleComment.init(this.id)
 		},
 		methods: {
+			onClickSwiper(e) {
+				console.log(e);
+				uni.previewImage({
+					current: e,
+					urls: this.album
+				})
+			},
 			getCommentCount(count) {
 				this.commentCount = count
 			},
@@ -215,10 +224,19 @@
 				})
 			},
 			api_targetFavorite() {
+				this.showLikeSuccess = false
 				this.$request('target-favorite-article', {
 					id: this.id
 				}).then(res => {
 					console.log(res)
+					if (!this.isLike) {
+						this.showLikeSuccess = true
+						clearTimeout(this.likeSuccessInter)
+						this.likeSuccessInter = setTimeout(() => {
+							this.showLikeSuccess = false
+						}, 4000)
+					}
+					
 					uni.showToast({
 						title: this.isLike ? '取消喜欢成功' : '添加喜欢成功',
 						icon: 'none'
