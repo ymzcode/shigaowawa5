@@ -37,6 +37,17 @@
 				moreStatus: 'loadmore'
 			}
 		},
+		onShareAppMessage(res) {
+			console.log(res)
+			if (res.from === 'button') {
+				const message = res.target.dataset
+				return {
+					title: `[DIY手工展览馆] - ${message.title}`,
+					imageUrl: message.album.split(',')[0],
+					path: `/pages/articleDetails/articleDetails?id=${message.id}`
+				}
+			}
+		},
 		computed: {
 			isLogin() {
 				return uniCloud.getCurrentUserInfo().uid && this.userInfo

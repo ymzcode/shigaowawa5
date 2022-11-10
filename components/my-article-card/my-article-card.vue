@@ -1,7 +1,8 @@
 <template>
 	<view class="article-card">
-		<view class="my-img-bg">
-			<image lazy-load src='https://cdn.uviewui.com/uview/album/1.jpg'></image>
+		<view class="card my-img-bg card-just" @click="gotoDetils" :animation="animation1">
+			<image style="width: 100%;height: 100%;" mode="widthFix" lazy-load
+				src='https://cdn.uviewui.com/uview/album/1.jpg'></image>
 			<!-- 顶/底部背景 -->
 			<view class="top-shandow-bg"></view>
 			<view class="bottom-shandow-bg"></view>
@@ -10,12 +11,14 @@
 				<u--text color="#ffffff" :lines="1" :text="cardData.title"></u--text>
 			</view>
 			<!-- 顶部设置按钮 -->
-			<view class="top-setting">
+			<view class="top-setting" @click.stop="rotateFn(1)">
 				<u-icon name="more-dot-fill" color="#ffffff" size="24"></u-icon>
 			</view>
 			<!-- 右下角分享 -->
-			<view class="bottom-share">
-				<u-icon name="share-square" color="#ffffff" size="24"></u-icon>
+			<view class="bottom-share" @click.stop="showShare">
+				<button style="margin: 0;padding: 0;border: none;background: none;" :data-id="cardData._id" :data-title="cardData.title" :data-album="cardData.album" open-type="share">
+					<u-icon name="share-square" color="#ffffff" size="24"></u-icon>
+				</button>
 			</view>
 			<!-- 左下角查看/评论 -->
 			<view class="left-read">
@@ -29,6 +32,17 @@
 				<text>{{ publish_date }}</text>
 			</view>
 		</view>
+		<view class="card card-back" :animation="animation2">
+			<view class="right-back" @click="rotateFn(2)">
+				<u-icon name="close-circle-fill" size="24"></u-icon>
+			</view>
+			<view class="back-title">
+				<u--text :lines="2" :text="cardData.title"></u--text>
+			</view>
+			<view class="back-setting-btn">
+				<u-button size="small" type="error" text="删除"></u-button>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -37,8 +51,17 @@
 		name: "my-article-card",
 		data() {
 			return {
-
+				animation1: null,
+				animation2: null,
+				animationObj: null
 			};
+		},
+		onShareAppMessage(res) {
+			console.log(res)
+			return {
+				title: '自定义分享标题',
+				path: `/pages/articleDetails/articleDetails?id=${this.cardData._id}`
+			}
 		},
 		computed: {
 			// 发表时间
@@ -57,6 +80,33 @@
 				type: Object,
 				default: () => {}
 			}
+		},
+		methods: {
+			showShare() {
+				// uni.showShareMenu({
+				// 	withShareTicket: true,
+				// 	menus: ['shareAppMessage', 'shareTimeline']
+				// })
+			},
+			gotoDetils() {
+				uni.navigateTo({
+					url: `/pages/articleDetails/articleDetails?id=${this.cardData._id}`
+				})
+			},
+			rotateFn(e) {
+				this.animationObj = uni.createAnimation({
+					duration: 1000,
+					timingFunction: 'linear'
+				})
+				if (e === 1) {
+					this.animation1 = this.animationObj.rotateY(180).step().export()
+					this.animation2 = this.animationObj.rotateY(0).step().export()
+				} else {
+					this.animation1 = this.animationObj.rotateY(0).step().export()
+					this.animation2 = this.animationObj.rotateY(180).step().export()
+				}
+
+			}
 		}
 	}
 </script>
@@ -70,6 +120,41 @@
 		position: relative;
 		margin: 20rpx 30rpx;
 		height: 300rpx;
+
+		.card {
+			transition: all 0.5s;
+			backface-visibility: hidden;
+			border-radius: 20rpx;
+			overflow: hidden;
+		}
+
+		.card-just {}
+
+		.card-back {
+			transform: rotateY(-180deg);
+			background-color: #ffffff;
+			width: 100%;
+			height: 100%;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.right-back {
+			position: absolute;
+			top: 10rpx;
+			right: 10rpx;
+		}
+
+		.back-title {
+			max-width: 400rpx;
+		}
+
+		.back-setting-btn {
+			margin-top: 10rpx;
+		}
 
 		.my-img-bg {
 			position: absolute;
@@ -110,18 +195,25 @@
 
 		.top-setting {
 			position: absolute;
-			top: 10rpx;
-			right: 10rpx;
+			top: 0rpx;
+			right: 0rpx;
 			z-index: 2;
+			padding: 10rpx 15rpx;
 		}
 
 		.bottom-share {
 			position: absolute;
-			bottom: 10rpx;
-			right: 10rpx;
+			bottom: 0rpx;
+			right: 0rpx;
 			z-index: 2;
+			padding: 10rpx 15rpx;
+			button {
+				&::after {
+					border: none;
+				}
+			}
 		}
-		
+
 		.left-read {
 			position: absolute;
 			bottom: 10rpx;
@@ -130,6 +222,7 @@
 			flex-direction: row;
 			align-items: center;
 			z-index: 2;
+
 			text {
 				color: #ffffff;
 				font-size: 28rpx;
