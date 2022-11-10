@@ -40,7 +40,7 @@
 				<u--text :lines="2" :text="cardData.title"></u--text>
 			</view>
 			<view class="back-setting-btn">
-				<u-button size="small" type="error" text="删除"></u-button>
+				<u-button size="small" type="error" text="删除" @click.stop="deleteMyArticle"></u-button>
 			</view>
 		</view>
 	</view>
@@ -82,6 +82,22 @@
 			}
 		},
 		methods: {
+			deleteMyArticle() {
+				this.$request('delete-my-article', {
+					id: this.cardData._id
+				}).then(res => {
+					console.log(res);
+					if (res.code === 0) {
+						uni.showToast({
+							title: '删除成功',
+							icon: 'none'
+						})
+						this.$emit('refshData')
+					}
+				}).catch(err => {
+					console.error(err)
+				})
+			},
 			showShare() {
 				// uni.showShareMenu({
 				// 	withShareTicket: true,

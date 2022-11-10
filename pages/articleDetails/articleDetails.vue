@@ -78,7 +78,9 @@
 	<view v-else class="app-body-wrapper" style="justify-content: center;align-items: center;">
 		<u-navbar bgColor="#323538" leftIconColor="#ffffff" :autoBack="true">
 		</u-navbar>
-		<u-empty mode="data"></u-empty>
+		<lottie-article-details-error></lottie-article-details-error>
+		<text>作品已被艺术家删除，
+		再转转其他作家的吧！</text>
 	</view>
 </template>
 
@@ -139,10 +141,10 @@
 		onLoad(e) {
 			console.log('传递的参数', e)
 			console.log(this.isLogin)
-			if (!e.id) {
+			this.id = e.id
+			if (!this.id) {
 				this.errorPage = true
 			}
-			this.id = e.id
 			uni.pageScrollTo({
 				scrollTop: 100,
 				duration: 0
@@ -153,7 +155,7 @@
 				this.api_getFavoriteArticleByid()
 			}
 
-			this.$refs.articleComment.init(this.id)
+			this.$refs.articleComment && this.$refs.articleComment.init(this.id)
 		},
 		methods: {
 			getCommentCount(count) {
@@ -232,9 +234,13 @@
 				this.$request('get-article-byid', {
 					id: this.id
 				}).then(res => {
+					console.log(res);
 					this.swiperLoading = false
 					if (res.code === 0) {
 						this.articleInfo = res.data[0]
+						if (this.articleInfo.article_status !== 1) {
+							this.errorPage = true
+						}
 					}
 				}).catch(err => {
 					this.swiperLoading = false

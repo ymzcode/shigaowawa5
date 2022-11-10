@@ -16,7 +16,7 @@
 				<text class="top-tip">分享你的新创作</text>
 			</view>
 
-			<my-article-card v-for="item in articleArr" :key="item._id" :cardData="item"></my-article-card>
+			<my-article-card v-for="item in articleArr" :key="item._id" :cardData="item" @refshData="refshData"></my-article-card>
 			
 			<u-loadmore :status="moreStatus" />
 			<view style="width: 100%;height: 100rpx;"></view>
@@ -73,6 +73,9 @@
 			this.api_getMyArticle()
 		},
 		methods: {
+			refshData() {
+				uni.startPullDownRefresh()
+			},
 			api_getMyArticle() {
 				if (!this.isLogin) {
 					uni.stopPullDownRefresh();
