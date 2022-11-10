@@ -29,8 +29,6 @@ exports.main = async (event, context) => {
 		_id: event.id
 	}).get()
 	
-	console.log(res);
-	
 	//返回数据给客户端
 	return res
 };

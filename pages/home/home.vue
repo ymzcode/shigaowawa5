@@ -20,7 +20,7 @@
 				<view class="hello-wrapper">
 					<canvas id="hello" type="2d"></canvas>
 				</view>
-				<text>{{userInfo.nickname}}</text>
+				<!-- <text>{{userInfo.nickname}}</text> -->
 			</view>
 
 			<!-- 展览图 -->
@@ -34,7 +34,7 @@
 
 			<!-- 广告 -->
 			<view style="margin: 20rpx 0;">
-				<u-swiper :list="list3" previousMargin="30" nextMargin="30" circular :autoplay="true" radius="5"
+				<u-swiper :list="bannerAd" previousMargin="30" nextMargin="30" circular :autoplay="true" radius="5"
 					bgColor="rgba(0,0,0,0)">
 				</u-swiper>
 			</view>
@@ -64,11 +64,7 @@
 	export default {
 		data() {
 			return {
-				list3: [
-					'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
-					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
-				],
+				bannerAd: [],
 				// 列表数据
 				articleArr: [],
 				refresherTriggered: false,
@@ -87,6 +83,7 @@
 		},
 		created() {
 			this.api_getArticle()
+			this.api_getHomeBannerAd()
 		},
 		onReady() {
 			this.initHello()
@@ -136,6 +133,14 @@
 						url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
 					})
 				}
+			},
+			api_getHomeBannerAd() {
+				this.$request('get-home-banner-ad', {}).then(res => {
+					console.log(res);
+					if (res.code === 0) {
+						this.bannerAd = res.data.map(item => item.img)
+					}
+				})
 			},
 			api_getArticle() {
 				this.moreStatus = 'loading'

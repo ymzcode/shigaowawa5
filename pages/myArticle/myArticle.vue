@@ -1,5 +1,13 @@
 <template>
 	<view class="app-body-wrapper">
+		
+		<view v-if="isLogin" class="article-card-wrapper">
+			<view class="article-card-add" @click="create">
+				<u-icon name="plus-circle-fill" color="#ffffff" size="30"></u-icon>
+				<text class="top-tip">分享你的新创作</text>
+			</view>
+		</view>
+		
 		<view v-if="noData || !isLogin" class="no-data">
 			<lottie-my-article-no-data></lottie-my-article-no-data>
 			<text>{{ !isLogin ? '登录后，才可以分享自己的作品哦' : '快来分享自己的第一个作品吧' }}</text>
@@ -11,11 +19,6 @@
 
 
 		<view v-else class="article-card-wrapper">
-			<view class="article-card-add" @click="create">
-				<u-icon name="plus-circle-fill" color="#ffffff" size="30"></u-icon>
-				<text class="top-tip">分享你的新创作</text>
-			</view>
-
 			<my-article-card v-for="item in articleArr" :key="item._id" :cardData="item" @refshData="refshData"></my-article-card>
 			
 			<u-loadmore :status="moreStatus" />
