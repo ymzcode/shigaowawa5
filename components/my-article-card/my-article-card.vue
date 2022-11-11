@@ -2,7 +2,7 @@
 	<view class="article-card">
 		<view class="card my-img-bg card-just" @click="gotoDetils" :animation="animation1">
 			<image style="width: 100%;height: 100%;" mode="widthFix" lazy-load
-				src='https://cdn.uviewui.com/uview/album/1.jpg'></image>
+				:src='album[0]'></image>
 			<!-- 顶/底部背景 -->
 			<view class="top-shandow-bg"></view>
 			<view class="bottom-shandow-bg"></view>
@@ -67,6 +67,12 @@
 			like_count() {
 				return this.cardData.like_count || 0
 			},
+			album() {
+				if (this.cardData.album) {
+					return this.cardData.album.split(',')
+				}
+				return []
+			}
 		},
 		props: {
 			cardData: {
