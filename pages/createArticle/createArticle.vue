@@ -1,36 +1,41 @@
 <template>
-	<scroll-view class="body-wrapper" :scroll-y="true">
-		<view class="content-wrapper">
-			<u--input placeholder="给你的作品起一个名字吧" border="surround" v-model="title" @change="titleChange" color='#ffffff'
-				clearable>
-			</u--input>
+	<view class="app-body-wrapper create-wrapper">
+		<lottie-create-article-step v-if="!showCategory" ></lottie-create-article-step>
+		<scroll-view :scroll-y="true" style="height: 100vh;">
+			<view class="content-wrapper">
+				<text class="tip">{{ textTip }}</text>
+				<view>
+					<u-upload class="upload-wrapper" :fileList="albumArr" @afterRead="afterRead" accept="image"
+						@delete="deletePic" :sizeType="['compressed']" name="3" multiple :maxCount="9">
+					</u-upload>
+				</view>
 
-			<view @click="onShowCategory">
-				<u--input :customStyle="{
-					margin: '20rpx 0'
-				}" placeholder="选择作品的分类" readonly border="surround" v-model="categoryText" color='#ffffff'>
+				<u--input v-if="albumArr.length > 0" placeholder="给你的作品起一个名字吧" border="surround" v-model="title"
+					@change="titleChange" color='#ffffff' clearable :maxlength="25" showWordLimit>
 				</u--input>
-			</view>
 
+				<view v-if="albumArr.length > 0" @click="onShowCategory">
+					<u--input :customStyle="{
+						margin: '20rpx 0'
+					}" placeholder="选择作品的分类" readonly border="surround" v-model="categoryText" color='#ffffff'>
+					</u--input>
+				</view>
+
+				<u-button v-if="checkForm(false)" type="primary" text="发布" @click="submit"></u-button>
+			</view>
 
 			<u-picker :show="showCategory" ref="uPicker" keyName="label" :columns="columns" @confirm="confirm"
 				closeOnClickOverlay @cancel="showCategory = false" @close="showCategory = false">
 			</u-picker>
-
-
-
-			<!-- <u-button type="primary" text="上传文件" @click="upload"></u-button> -->
-			<view>
-				<u-upload :fileList="albumArr" @afterRead="afterRead" accept="image" @delete="deletePic"
-					sizeType="compressed" name="3" multiple :maxCount="9">
-				</u-upload>
+				
+			<view style="height: 30vh;">
+				
 			</view>
-
-			<u-button type="primary" text="发布" @click="submit"></u-button>
-			<!-- <u-button type="primary" text="重置" @click="reSet"></u-button> -->
 			
-		</view>
-	</scroll-view>
+			<!-- <u-button type="primary" text="重置" @click="reSet"></u-button> -->
+
+		</scroll-view>
+	</view>
 </template>
 
 <script>
@@ -51,10 +56,21 @@
 						label: '其他',
 						id: '6360987abf704d00012e6afa'
 					}]
-				]
+				],
+				showSuccess: false
 			};
 		},
-		onShow() {
+		computed: {
+			textTip() {
+				if (this.albumArr.length === 0) {
+					return '两步即可上传你的作品，首先先上传你的作品吧'
+				}
+				if (this.title === '' || this.category === '') {
+					return '现在完成最后一步，给作品起一个名字吧'
+				}
+			}
+		},
+		onLoad() {
 			loginUtils.checkLogin()
 		},
 		methods: {
@@ -158,23 +174,23 @@
 				})
 			},
 			// 检查必填项
-			checkForm() {
+			checkForm(flag = true) {
 				if (uni.$u.trim(this.title) === '') {
-					uni.showToast({
+					flag && uni.showToast({
 						title: '请填写完整的作品名称',
 						icon: 'none'
 					})
 					return false
 				}
 				if (this.category === '') {
-					uni.showToast({
+					flag && uni.showToast({
 						title: '请选择作品的分类',
 						icon: 'none'
 					})
 					return false
 				}
 				if (this.albumArr.length === 0) {
-					uni.showToast({
+					flag && uni.showToast({
 						title: '请上传至少一张个人作品',
 						icon: 'none'
 					})
@@ -183,16 +199,19 @@
 				return true
 			},
 			async submit() {
-				console.log('tijiao');
 				if (!this.checkForm()) {
 					return
 				}
+				uni.showLoading({
+					title: '发布中···',
+					mask: true,
+				})
 				// promise方式
 				let processAll = []
 				this.albumArr.map(item => {
 					const uploadResult = uniCloud.uploadFile({
 						filePath: item.thumb,
-						cloudPath: 'a.jpg',
+						cloudPath: `${uniCloud.getCurrentUserInfo().uid}-${Date.now()}`,
 						fileType: 'image',
 						onUploadProgress: function(progressEvent) {
 							// console.log(progressEvent);
@@ -216,14 +235,18 @@
 					title: this.title,
 					category_id: this.category
 				}).then(res => {
+					uni.hideLoading()
 					console.log(res)
 					if (res.code === 0) {
+						// this.showSuccess = true
 						uni.navigateBack(-1)
 						uni.showToast({
 							title: '发布成功',
 							icon: 'none'
 						})
 					}
+				}).catch(err => {
+					uni.hideLoading()
 				})
 			}
 		}
@@ -231,14 +254,27 @@
 </script>
 
 <style scoped lang="scss">
-	.body-wrapper {
-		background: $linear-theme-bg;
-		color: #ffffff;
+	.create-wrapper {
+		width: 100vw;
 		height: 100vh;
+		overflow: hidden;
+		position: relative;
 	}
 
 	.content-wrapper {
 		padding: 0 40rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		z-index: 9;
+
+		.tip {
+			font-size: 30rpx;
+			margin-top: 10rpx;
+			margin-bottom: 30rpx;
+		}
 	}
 
 	.upload-wrapper {

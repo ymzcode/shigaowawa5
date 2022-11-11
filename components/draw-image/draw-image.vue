@@ -20,7 +20,7 @@
 		</view>
 		<!-- 标题 -->
 		<view style="height: 100rpx;">
-			<u--text color="#ffffff" :lines="2" :text="resObject.title"></u--text>
+			<u-text color="#ffffff" size="32rpx" :lines="2" :text="resObject.title"></u-text>
 			<!-- <text class="card-title"></text> -->
 		</view>
 	</view>
@@ -90,7 +90,7 @@
 	left: 30rpx;
 }
 .card-title {
-	font-size: 36rpx;
+	font-size: 28rpx;
 	color: #ffffff;
 	word-break: break-all;
 }
