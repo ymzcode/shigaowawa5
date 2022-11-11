@@ -27,7 +27,7 @@
 			</view>
 
 			<u-button type="primary" text="发布" @click="submit"></u-button>
-			<u-button type="primary" text="重置" @click="reSet"></u-button>
+			<!-- <u-button type="primary" text="重置" @click="reSet"></u-button> -->
 			
 		</view>
 	</scroll-view>

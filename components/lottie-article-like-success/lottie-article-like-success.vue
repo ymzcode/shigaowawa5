@@ -38,7 +38,7 @@
 					nodataView = lottie.loadAnimation({
 						loop: false,
 						autoplay: true,
-						path: 'https://assets10.lottiefiles.com/packages/lf20_rovf9gzu.json',
+						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/06e98a3d-63a7-446e-bc90-0906ccf3b8ae.json',
 						rendererSettings: {
 							context
 						}
