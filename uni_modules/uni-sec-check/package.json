@@ -1,11 +1,14 @@
 {
-  "id": "uni-config-center",
-  "displayName": "uni-config-center",
-  "version": "0.0.3",
-  "description": "uniCloud 配置中心",
+  "id": "uni-sec-check",
+  "displayName": "uni-sec-check",
+  "version": "2.0.0",
+  "description": "内容安全检测，包含图片和文字检测",
   "keywords": [
-    "配置",
-    "配置中心"
+    "内容安全检查",
+    "图片鉴黄",
+    "违禁词",
+    "广告词",
+    "敏感词"
 ],
   "repository": "",
   "engines": {
@@ -31,11 +34,8 @@
     "npmurl": "",
     "type": "unicloud-template-function"
   },
-  "directories": {
-    "example": "../../../scripts/dist"
-  },
   "uni_modules": {
-    "dependencies": [],
+    "dependencies": ["uni-config-center"],
     "encrypt": [],
     "platforms": {
       "cloud": {
