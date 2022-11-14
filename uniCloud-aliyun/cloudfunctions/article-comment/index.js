@@ -48,7 +48,7 @@ exports.main = async (event, context) => {
 			const user = admin_dbJQL.collection('uni-id-users').field('_id,avatar_file,nickname').getTemp()
 			const comment = dbJQL.collection('opendb-news-comments').where({
 				article_id: event.id
-			}).getTemp()
+			}).orderBy('comment_date', 'desc').getTemp()
 
 			res = await admin_dbJQL.collection(comment, user).foreignKey('opendb-news-comments.user_id').skip(
 					skip_count) // 跳过前20条
@@ -60,7 +60,6 @@ exports.main = async (event, context) => {
 			break
 		}
 		case 'add': {
-
 			// 内容安全检测
 			const uniSecCheck = new UniSecCheck({ // 创建内容安全检测模块实例
 				provider: 'mp-weixin', // 指定所使用服务的提供商，目前仅支持mp-weixin
