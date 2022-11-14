@@ -102,6 +102,8 @@
 						if (res.count === 0) {
 							this.articleArr = []
 							this.noData = true
+						} else if (res.count > 0) {
+							this.noData = false
 						}
 					}
 

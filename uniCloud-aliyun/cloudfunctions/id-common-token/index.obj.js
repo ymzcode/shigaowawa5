@@ -17,15 +17,35 @@ module.exports = {
 			}
 		}
 		const tokenRes = await this.uniIdCommon.checkToken(token)
-		
+
 		if (tokenRes.errCode) {
 			return {
 				errCode: 'BACK_LOGIN',
 				errMsg: 'Token过期请重新登录'
 			}
 		}
-		
+
 		return tokenRes
+	},
+	async getUserInfo(uid) {
+		
+		if (!uid) {
+			return {
+				errCode: 'UID_IS_NULL',
+				errMsg: '参数传递错误'
+			}
+		}
+		const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云对象的clientInfo
+			clientInfo: this.getClientInfo()
+		})
+
+		dbJQL.setUser({ // 指定后续执行操作的用户信息，此虚拟用户将同时拥有传入的uid、role、permission
+			role: ['admin'] // 指定当前执行用户的角色为admin。如果只希望指定为admin身份，可以删除uid和permission节点
+		})
+		const userInfo = await dbJQL.collection('uni-id-users').where({
+			_id: uid
+		}).field('wx_openid,avatar_file,nickname').get()
+		return userInfo
 	}
 	/**
 	 * method1方法描述

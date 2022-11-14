@@ -57,6 +57,11 @@
 					}
 				})
 			},
+			refreshComment() {
+				this.commentPage = 1
+				this.commentArr = []
+				this.getCommentContent()
+			},
 			getCommentCount() {
 				return this.commentCount
 			}

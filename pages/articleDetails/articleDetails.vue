@@ -94,7 +94,9 @@
 </template>
 
 <script>
-	import { createArticleShare } from '@/utils/share.js'
+	import {
+		createArticleShare
+	} from '@/utils/share.js'
 	export default {
 		data() {
 			return {
@@ -152,7 +154,8 @@
 		onShareAppMessage(res) {
 			if (res.from === 'button') {
 				const message = res.target.dataset
-				return createArticleShare(message.title, message.album.split(',')[0], `/pages/articleDetails/articleDetails?id=${message.id}`)
+				return createArticleShare(message.title, message.album.split(',')[0],
+					`/pages/articleDetails/articleDetails?id=${message.id}`)
 			}
 		},
 		onLoad(e) {
@@ -215,6 +218,7 @@
 							icon: 'none'
 						})
 						this.commentText = ''
+						this.$refs.articleComment.refreshComment()
 					}
 				})
 			},
@@ -402,7 +406,8 @@
 				flex-direction: row;
 				align-items: center;
 				color: #fff !important;
-				&::after{
+
+				&::after {
 					border: none;
 				}
 			}

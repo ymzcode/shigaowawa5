@@ -29,6 +29,7 @@ export function request(functionName, options) {
 		return Promise.resolve(result)
 
 	}).catch(err => {
+		console.error(err)
 		if (err.errCode === 'BACK_LOGIN') {
 			uni.navigateTo({
 				url: '/uni_modules/uni-id-pages/pages/login/login-withoutpwd'
@@ -36,7 +37,8 @@ export function request(functionName, options) {
 		}
 		showModal && uni.showToast({
 			title: err.errMsg || '请求服务失败',
-			icon: 'none'
+			icon: 'none',
+			duration: err.showToastDuration || 2000
 		})
 		return Promise.reject(err)
 	})
