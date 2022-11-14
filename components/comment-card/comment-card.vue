@@ -8,7 +8,7 @@
 			<view class="main">
 				<view class="content">
 					<text>{{ commentData.comment_content }}</text>
-					<u-icon name="thumb-up-fill" color="#ffffff" size="18"></u-icon>
+					<!-- <u-icon name="thumb-up-fill" color="#ffffff" size="18"></u-icon> -->
 				</view>
 				<view class="btn-group">
 					<view class="reply">
@@ -132,7 +132,7 @@
 					flex-wrap: wrap;
 					word-break: break-all;
 					font-size: 34rpx;
-					max-width: 400rpx;
+					// max-width: 400rpx;
 				}
 			}
 

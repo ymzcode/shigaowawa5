@@ -35,7 +35,7 @@
 			<!-- 广告 -->
 			<view style="margin: 20rpx 0;">
 				<u-swiper :list="bannerAd" previousMargin="30" nextMargin="30" circular :autoplay="true" radius="5"
-					bgColor="rgba(0,0,0,0)">
+					bgColor="rgba(0,0,0,0)" @click="clickSwiper">
 				</u-swiper>
 			</view>
 
@@ -70,7 +70,8 @@
 				refresherTriggered: false,
 				page: 1,
 				size: 10,
-				moreStatus: 'loadmore'
+				moreStatus: 'loadmore',
+				adArr: []
 			}
 		},
 		computed: {
@@ -100,11 +101,23 @@
 			this.api_getArticle()
 		},
 		methods: {
+			clickSwiper(e) {
+				console.log(e);
+				const data = this.adArr[e]
+				if (data.type === 'navigateToMiniProgram' && data.name === 'DIYSHOP') {
+					uni.navigateToMiniProgram({
+						appId: 'wxa2b21df27888b50f',
+						fail: (err) => {
+							console.error(err);
+						}
+					})
+				}
+			},
 			initHello() {
 				uni.createSelectorQuery().selectAll('#hello').node(res => {
 					console.log(res);
-					const width = 100
-					const height = 100
+					const width = 120
+					const height = 120
 					const canvas = res[0].node
 					const context = canvas.getContext('2d')
 					const dpr = uni.getSystemInfoSync().pixelRatio
@@ -139,6 +152,7 @@
 					console.log(res);
 					if (res.code === 0) {
 						this.bannerAd = res.data.map(item => item.img)
+						this.adArr = res.data
 					}
 				})
 			},
@@ -215,20 +229,18 @@
 		justify-content: flex-start;
 		margin: $bj-pd;
 		margin-bottom: 30rpx;
-		max-width: 200rpx;
-		max-height: 200rpx;
 
 		.hello-wrapper {
 			width: 100px;
-			height: 30px;
+			height: 40px;
 			position: relative;
 			overflow: hidden;
 			#hello {
 				position: absolute;
-				width: 100px;
-				height: 100px;
-				top: -35px;
-				left: -20px;
+				width: 120px;
+				height: 120px;
+				top: -40px;
+				left: -25px;
 			}
 		}
 		

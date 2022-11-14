@@ -63,7 +63,7 @@
 		computed: {
 			textTip() {
 				if (this.albumArr.length === 0) {
-					return '两步即可上传你的作品，首先先上传你的作品吧'
+					return '简单两步即可上传你的作品，首先先上传作品照片吧'
 				}
 				if (this.title === '' || this.category === '') {
 					return '现在完成最后一步，给作品起一个名字吧'
