@@ -1,6 +1,6 @@
 export default {
 	//调试模式
-	"debug": true,
+	"debug": false,
 	/*
 		登录类型 未列举到的或运行环境不支持的，将被自动隐藏。
 		如果需要在不同平台有不同的配置，直接用条件编译即可
@@ -19,12 +19,10 @@ export default {
 	],
 	//政策协议
 	"agreements": {
-		"serviceUrl": "https://xxx", //用户服务协议链接
-		"privacyUrl": "https://xxx", //隐私政策条款链接
+		"serviceUrl": "", //用户服务协议链接
+		"privacyUrl": "", //隐私政策条款链接
 		// 哪些场景下显示，1.注册（包括登录并注册，如：微信登录、苹果登录、短信验证码登录）、2.登录（如：用户名密码登录）
-		"scope": [
-			'register', 'login'
-		]
+		"scope": []
 	},
 	// 提供各类服务接入（如微信登录服务）的应用id
 	"appid": {
