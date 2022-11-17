@@ -15,13 +15,13 @@
 				<u-icon name="more-dot-fill" color="#ffffff" size="24"></u-icon>
 			</view>
 			<!-- 右下角分享 -->
-			<view class="bottom-share" @click.stop="showShare">
+			<view v-if="cardData.article_status === 1" class="bottom-share" @click.stop="showShare">
 				<button style="margin: 0;padding: 0;border: none;background: none;" :data-id="cardData._id" :data-title="cardData.title" :data-album="cardData.album" open-type="share">
 					<u-icon name="share-square" color="#ffffff" size="24"></u-icon>
 				</button>
 			</view>
 			<!-- 左下角查看/评论 -->
-			<view class="left-read">
+			<view v-if="cardData.article_status === 1" class="left-read">
 				<u-icon name="eye" color="#ffffff" size="14"></u-icon>
 				<text>{{ view_count }}</text>
 				<text style="width: 20rpx;"></text>
@@ -30,6 +30,17 @@
 				<text style="width: 20rpx;"></text>
 				<u-icon name="clock" color="#ffffff" size="14"></u-icon>
 				<text>{{ publish_date }}</text>
+				<!-- 文章状态 -->
+				<text style="width: 20rpx;"></text>
+				<u-icon name="order" color="#ffffff" size="14"></u-icon>
+				<text>{{ uTagText }}</text>
+			</view>
+			
+			<view v-if="cardData.article_status === 99" class="left-read">
+				<!-- 文章状态 -->
+				<text style="width: 20rpx;"></text>
+				<u-icon name="order" color="#ffffff" size="14"></u-icon>
+				<text style="color: #e45656">{{ uTagText }}</text>
 			</view>
 		</view>
 		<view class="card card-back" :animation="animation2">
@@ -72,6 +83,23 @@
 					return this.cardData.album.split(',')
 				}
 				return []
+			},
+			// 文章状态
+			uTagType() {
+				switch (this.cardData.article_status) {
+					case 1: 
+					 return 'success'
+					case 99:
+					 return 'error'
+				}
+			},
+			uTagText() {
+				switch (this.cardData.article_status) {
+					case 1: 
+					 return '已发布'
+					case 99:
+					 return '审核未通过'
+				}
 			}
 		},
 		props: {

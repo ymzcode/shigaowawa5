@@ -82,7 +82,7 @@ exports.main = async function(event, context) {
 				
 				
 				// 将文章状态改为审核不通过
-				const articleRes = await dbJQL.collection('opendb-news-articles').where({
+				const articleRes = await uniCloud.database().collection('opendb-news-articles').where({
 					_id: imgData_tmp.article_id
 				}).update({
 					article_status: 99
