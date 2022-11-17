@@ -28,7 +28,7 @@ exports.main = async (event, context) => {
 
 	// 构造默认参数
 	const params = {
-		article_status: 0,
+		article_status: 1,
 		album: event.album,
 		title: event.title,
 		category_id: event.category_id
