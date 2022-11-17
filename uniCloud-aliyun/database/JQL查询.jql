@@ -9,4 +9,12 @@
 // 详细JQL语法，请参考：https://uniapp.dcloud.net.cn/uniCloud/jql.html
 
 // 下面示例查询uni-id-users表的所有数据
-db.collection('opendb-news-comments').remove();
+
+
+db.collection('img-safe-review-log').add({
+				user_id: '333333',
+				img_url: '2222',
+				status: 1,
+				traceId: '11111',
+				article_id: '13123123123'
+			})

@@ -16,10 +16,7 @@ exports.main = async (event, context) => {
 	const skip_count = (event.page - 1) * event.size
 	const limit_count = Number(event.size)
 
-	const res = await dbJQL.collection('opendb-news-articles').where({
-			user_id: uid,
-			article_status: 1
-		}).skip(skip_count) // 跳过前20条
+	const res = await dbJQL.collection('opendb-news-articles').where('uid == auth.uid && article_status == 1 || article_status == 0').skip(skip_count) // 跳过前20条
 		.limit(limit_count) // 获取20条
 		.get({
 			getCount: true

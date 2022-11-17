@@ -1,0 +1,80 @@
+// 文档教程: https://uniapp.dcloud.net.cn/uniCloud/schema
+{
+	"bsonType": "object",
+	"required": [
+		"user_id",
+		"traceId",
+		"article_id"
+	],
+	"permission": {
+		"read": true,
+		"create": "auth.uid != null",
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"article_id": {
+			"bsonType": "string",
+			"title": "文章id",
+			"description": "文章id，参考opendb-news-articles表",
+			"foreignKey": "opendb-news-articles._id"
+		},
+		"user_id": {
+			"bsonType": "string",
+			"description": "文章作者ID， 参考`uni-id-users` 表",
+			"defaultValue": {
+				"$env": "uid"
+			},
+			"foreignKey": "uni-id-users._id"
+		},
+		"traceId": {
+			"bsonType": "string",
+			"title": "图片审核id",
+			"description": "图片审核id",
+			"label": "图片审核id",
+			"trim": "both"
+		},
+		"img_url": {
+			"bsonType": "string",
+			"title": "阿里云图片id",
+			"description": "图片id",
+			"label": "图片id",
+			"trim": "both"
+		},
+		"status": {
+			"bsonType": "int",
+			"title": "检查状态",
+			"description": "状态",
+			"defaultValue": 0,
+			"enum": [{
+					"value": 0,
+					"text": "图片未发送审核"
+				},
+				{
+					"value": 1,
+					"text": "图片已发送审核"
+				},
+				{
+					"value": 2,
+					"text": "图片通过审核"
+				},
+				{
+					"value": 3,
+					"text": "图片未通过审核"
+				}
+			]
+		},
+		"publish_date": {
+			"bsonType": "timestamp",
+			"title": "发表时间",
+			"description": "发表时间",
+			"defaultValue": {
+				"$env": "now"
+			}
+		}
+	},
+	"version": "0.0.1"
+}

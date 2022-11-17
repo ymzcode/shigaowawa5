@@ -211,7 +211,7 @@
 				this.albumArr.map(item => {
 					const uploadResult = uniCloud.uploadFile({
 						filePath: item.thumb,
-						cloudPath: `${uniCloud.getCurrentUserInfo().uid}-${Date.now()}`,
+						cloudPath: `${uniCloud.getCurrentUserInfo().uid}-${Date.now()}${item.thumb.substring(item.thumb.lastIndexOf('.'))}`,
 						fileType: 'image',
 						onUploadProgress: function(progressEvent) {
 							// console.log(progressEvent);
