@@ -57,25 +57,14 @@ exports.main = async function(event, context) {
 			if (result.Event !== 'wxa_media_check') {
 				return 'success'
 			}
+			
+			const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云函数的event和context，必传
+				event,
+				context
+			})
 
 			if (result.result.suggest !== 'pass') {
-				// 执行删除操作
-				const dbJQL = uniCloud.databaseForJQL({ // 获取JQL database引用，此处需要传入云函数的event和context，必传
-					event,
-					context
-				})
 				
-
-				const updateRes = await dbJQL.collection('img-safe-review-log').where({
-					traceId: result.trace_id
-				}).update({
-					status: 3
-				})
-				
-				if (updateRes.updated === 0 || updateRes.code !== 0) {
-					return 'error'
-				}
-
 				const imgData = await dbJQL.collection('img-safe-review-log').where({
 					traceId: result.trace_id
 				}).get()
@@ -84,15 +73,44 @@ exports.main = async function(event, context) {
 					return 'error'
 				}
 				
+				
+				
+				
 				console.log(imgData)
 				
-				const data = imgData.data[0]
+				const imgData_tmp = imgData.data[0]
+				
+				
+				// 将文章状态改为审核不通过
+				const articleRes = await dbJQL.collection('opendb-news-articles').where({
+					_id: imgData_tmp.article_id
+				}).update({
+					article_status: 99
+				})
+				
+				
+				console.log('更改文章状态')
+				console.log(articleRes)
+				
 				const pppp = await uniCloud.deleteFile({
 					fileList: [
-						data.img_url // 阿里云fileID是url形式，例：https://xxx.com/xxx.png
+						imgData_tmp.img_url // 阿里云fileID是url形式，例：https://xxx.com/xxx.png
 					]
 				})
 				console.log(pppp)
+				
+
+				const updateRes = await dbJQL.collection('img-safe-review-log').where({
+					traceId: result.trace_id
+				}).update({
+					status: 3
+				})
+				
+				
+				if (updateRes.updated === 0 || updateRes.code !== 0) {
+					return 'error'
+				}
+
 			}
 		}
 		return 'success'

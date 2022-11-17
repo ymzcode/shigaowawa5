@@ -38,7 +38,7 @@ exports.main = async (event, context) => {
 	const collection = dbJQL.collection('opendb-news-articles')
 	const articleRes = await collection.add(params)
 	
-	console.log('123123123123123123', articleRes)
+	// console.log('123123123123123123', articleRes)
 	
 	const albumArr = event.album.split(',')
 
@@ -65,6 +65,8 @@ exports.main = async (event, context) => {
 			version: 2 // 接口版本号
 		}).then(res => {
 			console.log(res)
+			// 此处不知道为什么如果用dbjql 会提示article_id找不到字段 
+			// 后续有待解决优化
 			uniCloud.database().collection('img-safe-review-log').add({
 				user_id: uid,
 				img_url: image,
