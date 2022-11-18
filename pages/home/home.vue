@@ -18,7 +18,7 @@
 			<!-- 欢迎语 -->
 			<view class="welcome-wrapper">
 				<view class="hello-wrapper">
-					<canvas id="hello" type="2d"></canvas>
+					<lottie-home-hello></lottie-home-hello>
 				</view>
 				<!-- <text>{{userInfo.nickname}}</text> -->
 			</view>
@@ -86,9 +86,6 @@
 			this.api_getArticle()
 			this.api_getHomeBannerAd()
 		},
-		onReady() {
-			this.initHello()
-		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh');
@@ -112,29 +109,6 @@
 						}
 					})
 				}
-			},
-			initHello() {
-				uni.createSelectorQuery().selectAll('#hello').node(res => {
-					console.log(res);
-					const width = 120
-					const height = 120
-					const canvas = res[0].node
-					const context = canvas.getContext('2d')
-					const dpr = uni.getSystemInfoSync().pixelRatio
-					canvas.width = width * dpr
-					canvas.height = height * dpr
-					context.scale(dpr, dpr)
-
-					lottie.setup(canvas)
-					const lottieView = lottie.loadAnimation({
-						loop: true,
-						autoplay: true,
-						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/16faff44-c18b-4ce6-88ed-545a1eb4166d.json',
-						rendererSettings: {
-							context
-						}
-					})
-				}).exec()
 			},
 			gotoUser() {
 				if (this.userInfo._id) {
@@ -235,13 +209,6 @@
 			height: 40px;
 			position: relative;
 			overflow: hidden;
-			#hello {
-				position: absolute;
-				width: 120px;
-				height: 120px;
-				top: -40px;
-				left: -25px;
-			}
 		}
 		
 	}
