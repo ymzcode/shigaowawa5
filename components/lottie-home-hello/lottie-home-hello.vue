@@ -42,7 +42,8 @@
 					nodataView = lottie.loadAnimation({
 						loop: true,
 						autoplay: true,
-						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/16faff44-c18b-4ce6-88ed-545a1eb4166d.json',
+						animationData: require('@/static/json/lottie-hello.js'),
+						// path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/16faff44-c18b-4ce6-88ed-545a1eb4166d.json',
 						rendererSettings: {
 							context
 						}

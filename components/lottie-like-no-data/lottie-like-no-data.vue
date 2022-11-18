@@ -38,7 +38,8 @@
 						autoplay: true,
 						// animationData: require('@/static/json/125880-shape-animation.json'),
 						// path: 'https://assets1.lottiefiles.com/packages/lf20_skMCZaRDnL.json',
-						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/2cf1c5ee-341b-4bda-9034-cca6bb02f3f2.json',
+						animationData: require('@/static/json/lottie-like-no-data.js'),
+						// path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/2cf1c5ee-341b-4bda-9034-cca6bb02f3f2.json',
 						rendererSettings: {
 							context
 						}
