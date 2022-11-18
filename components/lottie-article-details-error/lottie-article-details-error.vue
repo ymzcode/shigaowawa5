@@ -1,5 +1,6 @@
 <template>
-	<canvas id="lottie-article-details-error" class="lottie-article-details-error" type="2d"></canvas>
+	<!-- <canvas id="lottie-article-details-error" class="lottie-article-details-error" type="2d"></canvas> -->
+	<image class="lottie-article-details-error" src="https://pic.imgdb.cn/item/637724d016f2c2beb170ddfd.gif" mode="aspectFit"></image>
 </template>
 
 
@@ -14,12 +15,12 @@
 			};
 		},
 		mounted() {
-			this.$nextTick(() => {
-				this.initNoData()
-			})
+			// this.$nextTick(() => {
+			// 	this.initNoData()
+			// })
 		},
 		beforeDestroy() {
-			this.desNoData()
+			// this.desNoData()
 		},
 		methods: {
 			initNoData() {

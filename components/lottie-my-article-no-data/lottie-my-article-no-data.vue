@@ -1,5 +1,6 @@
 <template>
-	<canvas class="no-data" id="lottie-my-article-no-data" type="2d"></canvas>
+	<!-- <canvas class="no-data" id="lottie-my-article-no-data" type="2d"></canvas> -->
+	<image class="no-data" src="https://pic.imgdb.cn/item/63771ff016f2c2beb163cddc.gif" mode="aspectFit"></image>
 </template>
 
 <script>
@@ -13,12 +14,12 @@
 			};
 		},
 		mounted() {
-			this.$nextTick(() => {
-				this.initNoData()
-			})
+			// this.$nextTick(() => {
+			// 	this.initNoData()
+			// })
 		},
 		beforeDestroy() {
-			this.desNoData()
+			// this.desNoData()
 		},
 		methods: {
 			initNoData() {
@@ -38,7 +39,8 @@
 						autoplay: true,
 						// animationData: require('@/static/json/125880-shape-animation.json'),
 						// path: 'https://assets1.lottiefiles.com/packages/lf20_skMCZaRDnL.json',
-						path: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-cd668ee7-8151-4ac6-aeeb-ab0fc9b91400/db8bc348-29a8-43e3-961f-8b88a35fd27c.json',
+						animationData: require('@/static/json/lottie-my-article-no-data.js'),
+						// path: 'https://assets8.lottiefiles.com/packages/lf20_PWEiASV6Bw.json',
 						rendererSettings: {
 							context
 						}

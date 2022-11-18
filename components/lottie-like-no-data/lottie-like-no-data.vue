@@ -1,5 +1,6 @@
 <template>
-	<canvas id="no-data" class="no-data" type="2d"></canvas>
+	<!-- <canvas id="no-data" class="no-data" type="2d"></canvas> -->
+	<image class="no-data" src="https://pic.imgdb.cn/item/6377222616f2c2beb16ac1d6.gif" mode="aspectFit"></image>
 </template>
 
 <script>
@@ -13,12 +14,12 @@
 			};
 		},
 		mounted() {
-			this.$nextTick(() => {
-				this.initNoData()
-			})
+			// this.$nextTick(() => {
+			// 	this.initNoData()
+			// })
 		},
 		beforeDestroy() {
-			this.desNoData()
+			// this.desNoData()
 		},
 		methods: {
 			initNoData() {

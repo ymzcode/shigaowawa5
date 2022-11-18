@@ -1,5 +1,6 @@
 <template>
-	<canvas id="lottie-create-article-step" class="lottie-create-article-step" type="2d"></canvas>
+	<!-- <canvas id="lottie-create-article-step" class="lottie-create-article-step" type="2d"></canvas> -->
+	<image class="lottie-create-article-step" src="https://pic.imgdb.cn/item/63771d6916f2c2beb15b983f.gif" mode="widthFix"></image>
 </template>
 
 <script>
@@ -16,12 +17,12 @@
 			path: null
 		},
 		mounted() {
-			this.$nextTick(() => {
-				this.initNoData()
-			})
+			// this.$nextTick(() => {
+			// 	this.initNoData()
+			// })
 		},
 		beforeDestroy() {
-			this.desNoData()
+			// this.desNoData()
 		},
 		methods: {
 			onClick() {
@@ -66,6 +67,5 @@
 		right: 0;
 		width: 100vw;
 		height: 30vh;
-		z-index: -1;
 	}
 </style>
