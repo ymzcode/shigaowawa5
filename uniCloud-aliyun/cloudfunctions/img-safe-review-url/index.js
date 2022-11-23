@@ -65,6 +65,7 @@ exports.main = async function(event, context) {
 
 			if (result.result.suggest !== 'pass') {
 				
+				// 获取安全检查表 对应的记录
 				const imgData = await dbJQL.collection('img-safe-review-log').where({
 					traceId: result.trace_id
 				}).get()
@@ -92,6 +93,7 @@ exports.main = async function(event, context) {
 				console.log('更改文章状态')
 				console.log(articleRes)
 				
+				// 删除云存储中的对应图片
 				const pppp = await uniCloud.deleteFile({
 					fileList: [
 						imgData_tmp.img_url // 阿里云fileID是url形式，例：https://xxx.com/xxx.png
@@ -99,7 +101,7 @@ exports.main = async function(event, context) {
 				})
 				console.log(pppp)
 				
-
+				// 这里将安全检查记录表改为不通过状态
 				const updateRes = await dbJQL.collection('img-safe-review-log').where({
 					traceId: result.trace_id
 				}).update({

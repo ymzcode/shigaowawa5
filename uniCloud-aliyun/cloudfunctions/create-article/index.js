@@ -65,8 +65,7 @@ exports.main = async (event, context) => {
 			version: 2 // 接口版本号
 		}).then(res => {
 			console.log(res)
-			// 此处不知道为什么如果用dbjql 会提示article_id找不到字段 
-			// 后续有待解决优化
+			// 后续有待优化
 			uniCloud.database().collection('img-safe-review-log').add({
 				user_id: uid,
 				img_url: image,
