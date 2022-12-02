@@ -1,12 +1,6 @@
 {
 	"bsonType": "object",
-	"required": [
-		"article_id",
-		"user_id",
-		"comment_content",
-		"like_count",
-		"comment_type"
-	],
+	"required": ["article_id", "user_id", "comment_content", "like_count", "comment_type"],
 	"permission": {
 		"read": true,
 		"create": "auth.uid != null",

@@ -1,11 +1,6 @@
 {
 	"bsonType": "object",
-	"required": [
-		"user_id",
-		"album",
-		"title",
-		"category_id"
-	],
+	"required": ["user_id", "album", "title", "category_id"],
 	"permission": {
 		"read": true,
 		"create": "auth.uid != null",
@@ -67,28 +62,22 @@
 			"title": "文章状态",
 			"description": "文章状态：0 草稿箱 1 已发布 2 已删除 3 私密 99 审核未通过",
 			"defaultValue": 0,
-			"enum": [
-				{
-					"value": 0,
-					"text": "草稿箱"
-				},
-				{
-					"value": 1,
-					"text": "已发布"
-				},
-				{
-					"value": 2,
-					"text": "已删除"
-				},
-				{
-					"value": 3,
-					"text": "私密"
-				},
-				{
-					"value": 99,
-					"text": "审核未通过"
-				}
-			]
+			"enum": [{
+				"value": 0,
+				"text": "草稿箱"
+			}, {
+				"value": 1,
+				"text": "已发布"
+			}, {
+				"value": 2,
+				"text": "已删除"
+			}, {
+				"value": 3,
+				"text": "私密"
+			}, {
+				"value": 99,
+				"text": "审核未通过"
+			}]
 		},
 		"view_count": {
 			"bsonType": "int",
@@ -125,16 +114,13 @@
 			"bsonType": "int",
 			"title": "开放评论",
 			"description": "评论状态：0 关闭  1 开放",
-			"enum": [
-				{
-					"value": 0,
-					"text": "关闭"
-				},
-				{
-					"value": 1,
-					"text": "开放"
-				}
-			]
+			"enum": [{
+				"value": 0,
+				"text": "关闭"
+			}, {
+				"value": 1,
+				"text": "开放"
+			}]
 		},
 		"comment_count": {
 			"bsonType": "int",
